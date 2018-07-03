@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+# Utility to get grades for a UC Berkeley EECS course.
+spawn ssh USERNAME@hive5.cs.berkeley.edu # FIXME
+expect "password:"
+# Nothin' quite like hardcoding passwords. Doesn't matter here.
+send "PASSWORD\n" # FIXME
+expect "$ "
+# Might want to change this; unsure what best glookup command is.
+send "glookup -l\n"
+expect "$ "
+send "exit\n"

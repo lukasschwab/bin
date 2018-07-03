@@ -1,0 +1,10 @@
+#!/bin/bash
+# Uses Pushbullet to notify me of a long task completing.
+# e.g.:
+#    $ gcloud app deploy; phone
+# Setup:
+#    Set up Pushbullet API/CLI:
+#    https://github.com/GustavoKatel/pushbullet-cli
+echo "Process completed." | pb push
+echo; echo "Phoned:"; date
+
