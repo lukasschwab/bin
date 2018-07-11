@@ -1,0 +1,6 @@
+#!/bin/bash
+HISTFILE=~/.zsh_history
+set -o history
+history -a; history -c; history -r;
+history | cut -c 23- | grep -h $1
+
