@@ -6,3 +6,4 @@
 #   goto() { cd $(gofind) }
 cd $GOPATH/src;
 { echo $GOPATH/src; find * -type d -not -path '*/\.*' | fzf; } | tr "\n" "/";
+echo "";
