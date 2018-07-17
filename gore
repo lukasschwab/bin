@@ -1,13 +1,14 @@
 #!/bin/bash
-# Routine checks for go packages before releasing them.
+# GO RElease: routine checks for go packages.
 # echo colors how-to: https://stackoverflow.com/questions/5947742/
 G='\033[1;32m'
+B='\033[0;36m'
 NC='\033[0m'
-echo -e "${G}» go fmt${NC}" &&
-go fmt &&
-echo -e "${G}» go vet${NC}" &&
-go vet &&
-echo -e "${G}» golint${NC}" &&
-golint &&
-echo -e "${G}» go test${NC}" &&
+echo -e "${B}» go fmt${NC}" &&
+go fmt ./... &&
+echo -e "${B}» go vet${NC}" &&
+go vet ./... &&
+echo -e "${B}» golint${NC}" &&
+golint ./... &&
+echo -e "${B}» go test${NC}" &&
 go test;
