@@ -1,0 +1,4 @@
+#!/bin/bash
+# gir greps recursively in the pwd, ignoring binary files.
+grep -Ir $1 .
+
