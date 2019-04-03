@@ -1,5 +1,0 @@
-#!/bin/bash
-# girf greps recursively in the pwd, ignoring binary files.
-# girf only prints filenames.
-grep -Irl $1 .
-
