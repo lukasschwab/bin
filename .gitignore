@@ -1,1 +1,5 @@
+# Ignore compiled binaries.
 qt
+
+# Ignore Vanta-specific utils.
+o
