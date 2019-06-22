@@ -1,5 +1,10 @@
 #!/bin/bash
 # todo lists incomplete tasks in/below your pwd
-grep -Ir 'TODO' .
-grep -Ir 'FIXME' .
 
+grep -Ir 'TODO' .                                 \
+| gsed -e "s/[[:space:]]\+/ /g; s/:\/\//: \/\//g" \
+| grep 'TODO'; # Rehighlight matches.
+
+grep -Ir 'FIXME' .                                \
+| gsed -e "s/[[:space:]]\+/ /g; s/:\/\//: \/\//g" \
+| grep 'FIXME' # Rehighlight matches.
