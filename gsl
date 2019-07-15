@@ -1,6 +1,16 @@
 #!/bin/bash
-# fzf multiselect on the files in `git status` output.
+# fzf search on the files in `git status` output.
 # Uses fzf: https://github.com/junegunn/fzf
+#
+# Usage, e.g.:
+#   gsl diff
+#   gsl add
+#
+# Use TAB to multiselect in `fzf`.
+if [ "$#" -le 0 ]; then
+  echo "Missing git subcommand. Do you want 'gsl add'?"
+  exit 1
+fi
 ARGS=$(git status --porcelain | sed 's/^...//' | fzf -m)
 set -x
 git "${@:1}" "$ARGS"
