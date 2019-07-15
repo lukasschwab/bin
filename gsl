@@ -1,0 +1,6 @@
+#!/bin/bash
+# fzf multiselect on the files in `git status` output.
+# Uses fzf: https://github.com/junegunn/fzf
+ARGS=$(git status --porcelain | sed 's/^...//' | fzf -m)
+set -x
+git "${@:1}" "$ARGS"
