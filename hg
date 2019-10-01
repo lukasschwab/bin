@@ -1,7 +1,4 @@
 #!/bin/bash
 # hg pipes history into grep for finding commands you can't remember.
-HISTFILE=~/.zsh_history
-set -o history
-history -a; history -c; history -r;
-history | cut -c 23- | grep -h $1
+croppedhistory | grep -h $1
 

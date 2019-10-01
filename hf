@@ -1,8 +1,5 @@
 #!/bin/bash
 # hf pipes history into fzf for finding commands you can't remember.
-HISTFILE=~/.zsh_history
-set -o history
-history -a; history -c; history -r;
-# Cut sequence numbers, dedupe, fzf.
-history | cut -c 23- | awk '!a[$0]++' | fzf | pbcopy
+# dedupe, fzf.
+croppedhistory | awk '!a[$0]++' | fzf | pbcopy
 
