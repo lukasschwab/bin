@@ -1,5 +1,11 @@
 #!/bin/bash
 # hf pipes history into fzf for finding commands you can't remember.
-# dedupe, fzf.
-croppedhistory | awk '!a[$0]++' | fzf | pbcopy
+
+croppedhistory |
+awk '!a[$0]++' |	# Deduplicate lines.
+if [ $# -eq 0 ]; then	# Query for first argument if provided.
+	fzf
+else
+	fzf -q $1
+fi | pbcopy
 
