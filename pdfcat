@@ -30,9 +30,16 @@ echo "'use strict';var page = require('webpage').create(),system = require('syst
 # Fetch PDFs of each individual site.
 COUNTER=0
 for URL in "$@"; do
-  printf "${COUNTER}: PDF-ing ${URL}... "
-  phantomjs rasterize.js "${URL}" "${COUNTER}.pdf" "Letter"
-  printf "Done!\n"
+  if [ ${URL: -4} == ".pdf" ]
+  then
+    printf "${COUNTER}: downloading ${URL} as ${COUNTER}.pdf..."
+    wget --quiet -O "${COUNTER}.pdf" "${URL}"
+    printf "Done!\n"
+  else
+    printf "${COUNTER}: PDF-ing ${URL}... "
+    phantomjs rasterize.js "${URL}" "${COUNTER}.pdf" "Letter"
+    printf "Done!\n"
+  fi
   let COUNTER=COUNTER+1
 done
 
