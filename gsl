@@ -5,12 +5,25 @@
 # Usage, e.g.:
 #   gsl diff
 #   gsl add
+#   gsl checkout - check out files
+#   gsl -b checkout - check out branches
 #
 # Use TAB to multiselect in `fzf`.
 if [ "$#" -le 0 ]; then
   echo "Missing git subcommand. Do you want 'gsl add'?"
   exit 1
 fi
-ARGS=$(git status --porcelain | sed 's/^...//' | fzf -m)
+
+gitcommand=(git status --porcelain);
+formatter=(sed 's/^...//'); # Trim leading chars.
+
+# If `-b` flag is the first argument, operate on branches.
+if [ "$1" = "-b" ]; then
+  gitcommand=(git branch --format='%(refname:short)');
+  formatter=(tee) # Noop.
+  shift 1;
+fi
+
+ARGS=$(${gitcommand[@]} | ${formatter[@]} | fzf -m)
 set -x
 git "${@:1}" $ARGS
