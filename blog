@@ -29,7 +29,7 @@ case $1 in
   "error") prefix="${R}ERROR:$NC ";;
   *) blog error "Bad \`blog\` level: $1"; \
      bashdoc "$BASH_SOURCE"; \
-     exit ;;
+     exit 1;;
 esac
 
 printf "${prefix}${message}\n"

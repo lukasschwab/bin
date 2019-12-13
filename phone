@@ -11,12 +11,12 @@
 if [ -z "$twilio_number" ]; then
   blog error "Environment variable \`twilio_number\` is undefined.";
   bashdoc "$BASH_SOURCE";
-  exit;
+  exit 1;
 fi
 if [ -z "$personal_number" ]; then
   blog error "Environment variable \`personal_number\` is undefined.";
   bashdoc "$BASH_SOURCE";
-  exit;
+  exit 1;
 fi
 
 body="Ping!"
