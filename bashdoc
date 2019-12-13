@@ -1,7 +1,16 @@
 #!/bin/bash
 # bashdoc prints the contents of a file until the first blank line.
 # This is useful for bash scripts that begin with documentation before the code,
-# which I aim to standardize in bin.
+# which I aim to standardize in bin. This way, I can use bashdoc to echo help
+# strings without replicating them.
 #
-# This way, I can use bashdoc to echo help strings without replicating them.
-sed -e '/^$/,$d' "$1"
+# Usage:
+#   bashdoc <filename>
+#
+# Examples:
+#   # Print the bashdoc for some bash utility.
+#   bashdoc phone
+#   # Print the bashdoc for the current script.
+#   bashdoc "$BASH_SOURCE"
+
+tail -n +2 "$1" | sed -e '/^$/,$d'
