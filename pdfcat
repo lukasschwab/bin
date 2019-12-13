@@ -11,11 +11,11 @@ tempdir="__pdfcat_temp__"
 
 # Check for tools
 if ! [ -x "$(command -v gs)" ]; then
-  echo 'Error: Ghostscript (gs) is not installed.' >&2
+  blog error 'Ghostscript (gs) is not installed.' >&2
   exit 1
 fi
 if ! [ -x "$(command -v phantomjs)" ]; then
-  printf "Installing PhantomJS from Homebrew."
+  blog info "Installing PhantomJS from Homebrew."
   brew tap homebrew/cask
   brew cask install phantomjs
 fi
@@ -32,18 +32,18 @@ COUNTER=0
 for URL in "$@"; do
   if [ ${URL: -4} == ".pdf" ]
   then
-    printf "${COUNTER}: downloading ${URL} as ${COUNTER}.pdf..."
+    blog info "${COUNTER}: downloading ${URL} as ${COUNTER}.pdf..."
     wget --quiet -O "${COUNTER}.pdf" "${URL}"
-    printf "Done!\n"
+    blog info "Done!"
   else
-    printf "${COUNTER}: PDF-ing ${URL}... "
+    blog info "${COUNTER}: PDF-ing ${URL}... "
     phantomjs rasterize.js "${URL}" "${COUNTER}.pdf" "Letter"
-    printf "Done!\n"
+    blog info "Done!"
   fi
   let COUNTER=COUNTER+1
 done
 
-printf "Catenating PDFs. This might take a while...\n"
+blog info "Catenating PDFs. This might take a while...\n"
 gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="${outputfile}" $(ls *.pdf | sort -V)
 
 # Clean up intermediates.

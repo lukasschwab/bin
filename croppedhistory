@@ -2,8 +2,8 @@
 # croppedhistory removes the line numbers from history output for deduping.
 # It also does some stuff I don't fully understand, because I wrote it when
 # I first wrote hg.
+
 HISTFILE=~/.zsh_history
 set -o history
 history -a; history -c; history -r;
 history | cut -c 23-
-

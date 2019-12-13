@@ -10,8 +10,9 @@
 #
 # Use TAB to multiselect in `fzf`.
 if [ "$#" -le 0 ]; then
-  echo "Missing git subcommand. Do you want 'gsl add'?"
-  exit 1
+  blog error "Missing git subcommand. Do you want 'gsl add'?";
+  bashdoc "$BASH_SOURCE";
+  exit 1;
 fi
 
 gitcommand=(git status --porcelain);

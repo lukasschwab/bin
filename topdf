@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
+# topdf is a wrapper for a standard Pandoc configuration for rendering a
+# simple Markdown file as a PDF. Requires pandoc, xelatex.
+#
+# Usage:
+#   pandoc <filename.md>
+#   # You can pass additional pandoc arguments.
+#   pandoc <filename.md> --toc
+
 # ARG WRANGLING
 if [[ $# -eq 0 ]] ; then
-    echo 'Usage: `topdf somefile.md`'
-    exit 0
+    blog error "No input file specified.";
+    bashdoc "$BASH_SOURCE";
+    exit 1;
 fi
 INFILE=$1
 NAME=${1%.md}
@@ -12,4 +21,4 @@ sed -e 's/––/---/g' ${INFILE} | # Better em-dashes
 sed -e 's/<br>/\\\newline /g' | # Support <br> for line breaks. Add any other operations after this...
 pandoc --from=markdown --pdf-engine=xelatex -o ${PDFNAME} --variable urlcolor=NavyBlue "${@:2:99}" # ...and before this.
 # CONVENIENCE
-echo "Done: created" $PDFNAME
+blog info "Created $PDFNAME."

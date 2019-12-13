@@ -9,12 +9,12 @@
 #       PERSONAL_NUMBER="+0987654321" # The number that will be notified.
 
 if [ -z "$twilio_number" ]; then
-  echo "ERROR: environment variable \`twilio_number\` is undefined.";
+  blog error "Environment variable \`twilio_number\` is undefined.";
   bashdoc "$BASH_SOURCE";
   exit;
 fi
 if [ -z "$personal_number" ]; then
-  echo "ERROR: environment variable \`personal_number\` is undefined.";
+  blog error "Environment variable \`personal_number\` is undefined.";
   bashdoc "$BASH_SOURCE";
   exit;
 fi
@@ -31,4 +31,4 @@ twilio api:core:messages:create \
   --body "$body" \
   | : # None of those output formats are nice.
 
-echo "SUCCESS: notified at $(date)."
+blog info "Notified $personal_number ($(date))."

@@ -1,5 +1,5 @@
 #!/bin/bash
 # gir greps recursively in the pwd, ignoring binary files.
 # Note: just use `ag` for speed. `brew install the_silver_searcher`
-grep -Ir "$@" .
 
+grep -Ir "$@" .
