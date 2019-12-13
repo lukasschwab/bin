@@ -19,9 +19,9 @@ if [ -z "$personal_number" ]; then
   exit 1;
 fi
 
-body="Ping!"
+body="Ping: $1"
 if [ $# -eq 0 ]; then
-  body="Ping: $1"
+  body="Ping!"
 fi
 
 # https://www.twilio.com/docs/twilio-cli/general-usage#output-formats
