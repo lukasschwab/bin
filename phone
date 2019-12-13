@@ -1,10 +1,34 @@
 #!/bin/bash
-# Uses Pushbullet to notify me of a long task completing.
+# Uses Twilio to notify me of a long task completing.
 # e.g.:
 #    $ gcloud app deploy; phone
 # Setup:
-#    Set up Pushbullet API/CLI:
-#    https://github.com/GustavoKatel/pushbullet-cli
-echo "Process completed." | pb push
-echo; echo "Phoned:"; date
+#    Set up Twilio API/CLI: https://www.twilio.com/docs/twilio-cli/quickstart
+#    Add two variables to .zshrc:
+#       TWILIO_NUMBER="+1234567890"   # A number from which Twilio can send.
+#       PERSONAL_NUMBER="+0987654321" # The number that will be notified.
 
+if [ -z "$twilio_number" ]; then
+  echo "ERROR: environment variable \`twilio_number\` is undefined.";
+  bashdoc "$BASH_SOURCE";
+  exit;
+fi
+if [ -z "$personal_number" ]; then
+  echo "ERROR: environment variable \`personal_number\` is undefined.";
+  bashdoc "$BASH_SOURCE";
+  exit;
+fi
+
+body="Ping!"
+if [ $# -eq 0 ]; then
+  body="Ping: $1"
+fi
+
+# https://www.twilio.com/docs/twilio-cli/general-usage#output-formats
+twilio api:core:messages:create \
+  --from "$twilio_number" \
+  --to "$personal_number" \
+  --body "$body" \
+  | : # None of those output formats are nice.
+
+echo "SUCCESS: notified at $(date)."
