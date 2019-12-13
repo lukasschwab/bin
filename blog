@@ -1,0 +1,35 @@
+#!/bin/bash
+# blog is a limited bash leveled-logging utility.
+#
+# Usage:
+#   blog [info|warn|error] <message>
+#
+# Examples:
+#   blog info "Here is some useful info."
+#   blog warn "Here is a warning. Hmm..."
+#   blog error "Ack, an error! Oh no!"
+
+# TODO: lots of extensions.
+#   Emojis so I seem cool.
+#   Logging the time.
+#   Custom levels.
+#   Built-in filtering.
+#   Some unusual character to make blog logs grep-able.
+#   Make the arguments less positionally-dependent.
+
+G='\033[0;32m'
+Y='\033[1;33m'
+R='\033[0;31m'
+NC='\033[0m'
+
+message=$2
+case $1 in
+  "info") prefix="${G}INFO:${NC} " ;;
+  "warn") prefix="${Y}WARN:${NC} " ;;
+  "error") prefix="${R}ERROR:$NC ";;
+  *) blog error "Bad \`blog\` level: $1"; \
+     bashdoc "$BASH_SOURCE"; \
+     exit ;;
+esac
+
+printf "${prefix}${message}\n"
