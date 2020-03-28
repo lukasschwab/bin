@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+# semvercompare compares two semantic versions with the same number of
+# components.
+#
+# Usage: semvercompare <v0> <v1>
+#   semvercompare 1.2.10 1.3.10
+#
+# Output:
+#   1 - when v0 is later than v1
+#   0 - when v0 and v1 are the same
+#  -1 - when v0 is earlier than v1
+
+import sys
+
+assert len(sys.argv) == 3
+v0 = sys.argv[1]
+v1 = sys.argv[2]
+
+v0_comparable = [int(token) for token in v0.split(".")]
+v1_comparable = [int(token) for token in v1.split(".")]
+assert len(v0_comparable) == len(v1_comparable)
+
+print((v0_comparable>v1_comparable)-(v0_comparable<v1_comparable))
