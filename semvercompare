@@ -20,4 +20,5 @@ v0_comparable = [int(token) for token in v0.split(".")]
 v1_comparable = [int(token) for token in v1.split(".")]
 assert len(v0_comparable) == len(v1_comparable)
 
-print((v0_comparable>v1_comparable)-(v0_comparable<v1_comparable))
+# Hack for cmp() functionality.
+print((v0_comparable > v1_comparable) - (v0_comparable < v1_comparable))

@@ -26,7 +26,7 @@ message=$2
 case $1 in
   "info") prefix="${G}INFO:${NC} " ;;
   "warn") prefix="${Y}WARN:${NC} " ;;
-  "error") prefix="${R}ERROR:$NC ";;
+  "error") prefix="${R}ERROR:$NC " ;;
   *) blog error "Bad \`blog\` level: $1"; \
      bashdoc "$BASH_SOURCE"; \
      exit 1;;
