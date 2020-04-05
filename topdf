@@ -20,5 +20,15 @@ PDFNAME=${NAME}.pdf
 sed -e 's/––/---/g' ${INFILE} | # Better em-dashes
 sed -e 's/<br>/\\\newline /g' | # Support <br> for line breaks. Add any other operations after this...
 pandoc --from=markdown --pdf-engine=xelatex -o ${PDFNAME} --variable urlcolor=NavyBlue "${@:2:99}" # ...and before this.
-# CONVENIENCE
-blog info "Created $PDFNAME."
+
+# Exit code from the last command.
+pandoc_status="$?"
+case $pandoc_status in
+  0)
+    blog info "Created $PDFNAME."
+    ;;
+  *)
+    blog error "Failed to generate PDF. See above for details."
+    exit $pandoc_status
+    ;;
+esac
