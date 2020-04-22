@@ -1,3 +1,6 @@
 # Ignore compiled binaries.
 qt
 histless
+
+# Ignore Vanta-specific utils.
+rri
