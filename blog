@@ -24,9 +24,9 @@ NC='\033[0m'
 
 message=$2
 case $1 in
-  "info") prefix="${G}INFO:${NC} " ;;
-  "warn") prefix="${Y}WARN:${NC} " ;;
-  "error") prefix="${R}ERROR:$NC " ;;
+  "info") prefix="${G}INFO:${NC}\t" ;;
+  "warn") prefix="${Y}WARN:${NC}\t" ;;
+  "error") prefix="${R}ERROR:$NC\t" ;;
   *) blog error "Bad \`blog\` level: $1"; \
      bashdoc "$BASH_SOURCE"; \
      exit 1;;
