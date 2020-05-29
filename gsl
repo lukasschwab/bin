@@ -9,6 +9,7 @@
 #   gsl -b checkout - check out branches
 #
 # Use TAB to multiselect in `fzf`.
+
 if [ "$#" -le 0 ]; then
   blog error "Missing git subcommand. Do you want 'gsl add'?";
   bashdoc "$BASH_SOURCE";
