@@ -1,5 +1,5 @@
 #!/bin/bash
-# todo lists incomplete tasks in/below your pwd
+# todo lists incomplete tasks in/below your pwd.
 
 grep -Ir 'TODO' .                                 \
 | gsed -e "s/[[:space:]]\+/ /g; s/:\/\//: \/\//g" \

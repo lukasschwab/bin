@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# margins shrinks PDF contents by 20% and splats them into a letter-size page
+# to add margins to them.
+#
+# NOTE: this operation is not in-place; a copy of the PDF is created.
+#
+# Uses pdfscale: https://github.com/tavinus/pdfScale
+#
+# Usage: `margins some.pdf`
+#   Yields some.LETTER.SCALED.pdf.
+
+pdfscale -v -r LETTER -s 0.8 "$1"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# lsf pipes ls results into fzf for finding commands you can't remember.
+# lsf pipes ls results into fzf.
 #
 # Standard useage:
 # 	lsf
