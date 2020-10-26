@@ -15,6 +15,9 @@ if [ "${base: -1}" != "/" ]; then
   base="$base/"
 fi
 
+# TODO: grep for application/rss+xml; sometimes feed links are lodged in HTML
+# <head> elements.
+
 check () {
   local httpStatus=$(curl -Is --write-out %{http_code} --output /dev/null "$1");
   local class=$(($httpStatus / 100))
