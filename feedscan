@@ -37,3 +37,4 @@ done
 # Check common non-XML cases for good measure.
 check "${base}feed.atom"
 check "${base}feed.json"
+check "${base}?format=rss"
