@@ -186,7 +186,7 @@ Usage: `margins some.pdf`
 pdfcat uses PhantomJS to retrieve websites as PDFs, then catenates the PDFs
 into a single PDF with Ghostscript. Spooky!
 
-Usage: download_all https://scrty.io/start-here \
+Usage: pdfcat https://scrty.io/start-here \
   https://medium.com/starting-up-security/starting-up-security-87839ab21bae \
   ... any number of URLs.
 ```
