@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# tikz2svg converts a tikz document to SVG, via PDF.
+#
+# Uses:
+#   + xelatex (though it should be easy to sub in pdflatex) and
+#   + pdf2svg: https://formulae.brew.sh/formula/pdf2svg
+#
+# Usage: tikz2svg [someTikzFile.tex]
+# Example input: https://gist.github.com/lukasschwab/6a3e2cdd78075e8923a9057f7609a898
+#
+# See also: https://pandoc.org/lua-filters.html#building-images-with-tikz
+
+# Extract filename before final extension.
+filename="${1%.*}"
+# Generate intermediate PDF in temporary directory.
+intermediate="tikz2svg$$.$filename"
+xelatex -interaction=batchmode -output-directory="/tmp" -jobname="$intermediate" "$1"
+# Generate SVG from intermediate PDF.
+pdf2svg "/tmp/$intermediate.pdf" "$filename.svg"
+# Clean up intermediates.
+rm /tmp/$intermediate*
+blog info "Wrote $filename.svg"
