@@ -1,4 +1,5 @@
 #!/bin/bash
 # hg pipes history into grep for finding commands you can't remember.
+
 croppedhistory | grep -h $1
 

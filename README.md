@@ -115,10 +115,6 @@ Uses fzf: https://github.com/junegunn/fzf
 
 To conveniently cd to the found directory, set a function in your .zshrc:
   goto() { cd $(gofind) }
- $GOPATH/src;
-echo $GOPATH/src; find * -type d -not -path '*/\.*' | fzf; } | tr "
-" "/";
-ho "";
 ```
 
 ### `gore`
@@ -152,7 +148,6 @@ hf pipes history into fzf for finding commands you can't remember.
 
 ```
 hg pipes history into grep for finding commands you can't remember.
-oppedhistory | grep -h $1
 ```
 
 ### `lsf`
@@ -217,6 +212,21 @@ Output:
   1 - when v0 is later than v1
   0 - when v0 and v1 are the same
  -1 - when v0 is earlier than v1
+```
+
+### `tikz2svg`
+
+```
+tikz2svg converts a tikz document to SVG, via PDF.
+
+Uses:
+  + xelatex (though it should be easy to sub in pdflatex) and
+  + pdf2svg: https://formulae.brew.sh/formula/pdf2svg
+
+Usage: tikz2svg [someTikzFile.tex]
+Example input: https://gist.github.com/lukasschwab/6a3e2cdd78075e8923a9057f7609a898
+
+See also: https://pandoc.org/lua-filters.html#building-images-with-tikz
 ```
 
 ### `todo`

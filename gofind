@@ -4,6 +4,7 @@
 #
 # To conveniently cd to the found directory, set a function in your .zshrc:
 #   goto() { cd $(gofind) }
+
 cd $GOPATH/src;
 { echo $GOPATH/src; find * -type d -not -path '*/\.*' | fzf; } | tr "\n" "/";
 echo "";
