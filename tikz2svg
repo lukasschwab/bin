@@ -19,4 +19,7 @@ xelatex -interaction=batchmode -output-directory="/tmp" -jobname="$intermediate"
 pdf2svg "/tmp/$intermediate.pdf" "$filename.svg"
 # Clean up intermediates.
 rm /tmp/$intermediate*
+# Rewrite IDs to prevent collisions between generated SVGs.
+sed -i '' "s/ id=\"/ id=\"$filename-/g; s/\"#/\"#$filename-/g" "$filename.svg"
+
 blog info "Wrote $filename.svg"
