@@ -29,6 +29,7 @@ These are either dependencies of scripts in this directory, or else just softwar
 
 ### PDF tools
 
++ 🍺 `basictex`
 + 🍺 `pandoc`
 + 🍺 `ghostscript`
 + 🍺 `ocrmypdf`
