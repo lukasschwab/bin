@@ -21,6 +21,7 @@ formatter=(sed 's/^...//'); # Trim leading chars.
 
 # If `-b` flag is the first argument, operate on branches.
 if [ "$1" = "-b" ]; then
+  # Might want --sort=committerdate to sort by freshness.
   gitcommand=(git branch --format='%(refname:short)');
   formatter=(tee) # Noop.
   shift 1;
