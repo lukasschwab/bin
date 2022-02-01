@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# dcover checks the coverage impact of a change to a go monorepo.
+# 
+# Uses:
+#   + colordiff: https://formulae.brew.sh/formula/colordiff
+# 
+# An improved version would iterate over the tabular data and output comparisons
+# package-by-package.
+
+set -e
+
+tmp_dir=$(mktemp -d -t dcover)
+
+# Get feature (current) branch name.
+head=$(git rev-parse --abbrev-ref HEAD)
+
+# Profile main branch.
+blog info "Profiling main..."
+git checkout main
+go test -coverprofile "$tmp_dir/main.out" ./...
+mainCover=$(go tool cover -func="$tmp_dir/main.out" | tr -s '\t')
+
+# Profile feature branch.
+blog info "Profiling $head..."
+git checkout "$head"
+go test -coverprofile "$tmp_dir/branch.out" ./...
+branchCover=$(go tool cover -func="$tmp_dir/branch.out" | tr -s '\t')
+
+echo # Spacing.
+blog info "Coverage impact of $head:"
+colordiff --ignore-space-change <(echo "$mainCover") <(echo "$branchCover")
+
+rm -rf "$tmp_dir"

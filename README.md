@@ -87,6 +87,18 @@ It also does some stuff I don't fully understand, because I wrote it when
 I first wrote hg.
 ```
 
+### `dcover`
+
+```
+dcover checks the coverage impact of a change to a go monorepo.
+
+Uses:
+  + colordiff: https://formulae.brew.sh/formula/colordiff
+
+An improved version would iterate over the tabular data and output comparisons
+package-by-package.
+```
+
 ### `feedscan`
 
 ```
