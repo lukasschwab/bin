@@ -9,14 +9,6 @@
 #   blog warn "Here is a warning. Hmm..."
 #   blog error "Ack, an error! Oh no!"
 
-# TODO: lots of extensions.
-#   Emojis so I seem cool.
-#   Logging the time.
-#   Custom levels.
-#   Built-in filtering.
-#   Some unusual character to make blog logs grep-able.
-#   Make the arguments less positionally-dependent.
-
 G='\033[0;32m'
 Y='\033[1;33m'
 R='\033[0;31m'
