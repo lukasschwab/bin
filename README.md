@@ -90,13 +90,14 @@ I first wrote hg.
 ### `dcover`
 
 ```
-dcover checks the coverage impact of a change to a go monorepo.
+dcover checks the coverage impact of merging the current Go monorepo branch
+into main.
 
-Uses:
-  + colordiff: https://formulae.brew.sh/formula/colordiff
+Uses colordiff: https://formulae.brew.sh/formula/colordiff
 
-An improved version would iterate over the tabular data and output comparisons
-package-by-package.
+Example:
+  git checkout featurebranch
+  dcover
 ```
 
 ### `feedscan`
