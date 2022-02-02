@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# dcover checks the coverage impact of a change to a go monorepo.
-# 
-# Uses:
-#   + colordiff: https://formulae.brew.sh/formula/colordiff
-# 
-# An improved version would iterate over the tabular data and output comparisons
-# package-by-package.
+# dcover checks the coverage impact of merging the current Go monorepo branch
+# into main.
+#
+# Uses colordiff: https://formulae.brew.sh/formula/colordiff
+#
+# Example:
+#   git checkout featurebranch
+#   dcover
 
 set -e
 
@@ -25,6 +26,9 @@ blog info "Profiling $head..."
 git checkout "$head"
 go test -coverprofile "$tmp_dir/branch.out" ./...
 branchCover=$(go tool cover -func="$tmp_dir/branch.out" | tr -s '\t')
+
+# An improved version would iterate over the tabular data and output comparisons
+# package-by-package.
 
 echo # Spacing.
 blog info "Coverage impact of $head:"
