@@ -177,6 +177,14 @@ List all files:
 	lsf -a
 ```
 
+### `mainbranch`
+
+```
+mainbranch returns "main" if the current git repository has a branch named
+"main." Otherwise, if the repostiory has a branch named "master," mainbranch
+returns "master."
+```
+
 ### `margins`
 
 ```

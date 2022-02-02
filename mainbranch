@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# mainbranch returns "main" if the current git repository has a branch named
+# "main." Otherwise, if the repostiory has a branch named "master," mainbranch
+# returns "master."
+
+set -e
+
+git branch --list main master --sort="refname" --format='%(refname:short)' \
+| head -n 1

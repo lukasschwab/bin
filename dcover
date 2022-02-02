@@ -14,10 +14,17 @@ tmp_dir=$(mktemp -d -t dcover)
 
 # Get feature (current) branch name.
 head=$(git rev-parse --abbrev-ref HEAD)
+# Get main branch name.
+main=$(mainbranch)
+
+if [ "$head" = "$main" ]; then
+  blog error "mainbranch returns $main; run dcover on a feature branch."
+  exit
+fi
 
 # Profile main branch.
-blog info "Profiling main..."
-git checkout main
+blog info "Profiling $main..."
+git checkout "$main"
 go test -coverprofile "$tmp_dir/main.out" ./...
 mainCover=$(go tool cover -func="$tmp_dir/main.out" | tr -s '\t')
 
