@@ -116,13 +116,6 @@ Examples:
   feedscan https://lukasschwab.me/blog/
 ```
 
-### `gir`
-
-```
-gir greps recursively in the pwd, ignoring binary files.
-Note: just use `ag` for speed. `brew install the_silver_searcher`
-```
-
 ### `gofind`
 
 ```
