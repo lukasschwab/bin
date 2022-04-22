@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# gitdone deletes the current feature branch and returns to an updated
+# main branch. See: mainbranch.
+
+feature=$(git rev-parse --abbrev-ref HEAD)
+git checkout $(mainbranch)
+git pull
+git branch -d "$feature"

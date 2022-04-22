@@ -19,7 +19,7 @@ These are either dependencies of scripts in this directory, or else just softwar
 ### Languages
 
 + 🍺 `go`
-+ 🍺 `python`
++ 🍺 `python` via `pyenv`
 + 🍺 `node`
 
 ### Images & video tools
@@ -114,6 +114,13 @@ Examples:
   feedscan lukasschwab.me/blog/
   feedscan http://lukasschwab.me/blog/
   feedscan https://lukasschwab.me/blog/
+```
+
+### `gitdone`
+
+```
+gitdone deletes the current feature branch and returns to an updated
+main branch. See: mainbranch.
 ```
 
 ### `gofind`
