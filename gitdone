@@ -4,5 +4,5 @@
 
 feature=$(git rev-parse --abbrev-ref HEAD)
 git checkout $(mainbranch)
-git pull
 git branch -d "$feature"
+git pull
