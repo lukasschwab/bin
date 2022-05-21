@@ -1,0 +1,9 @@
+#!/bin/bash
+# mp3-dl downloads a YouTube video's audio as an MP3.
+# Uses youtube-dl: https://github.com/ytdl-org/youtube-dl
+# Use with id3ed to edit MP3 metadata: https://github.com/lukasschwab/id3ed
+# 
+# Usage:
+#   mp3-dl https://www.youtube.com/watch\?v\=MH_D26i2NyE
+
+youtube-dl -x --audio-format mp3 "${@:1}"

@@ -199,6 +199,17 @@ Usage: `margins some.pdf`
   Yields some.LETTER.SCALED.pdf.
 ```
 
+### `mp3-dl`
+
+```
+mp3-dl downloads a YouTube video's audio as an MP3.
+Uses youtube-dl: https://github.com/ytdl-org/youtube-dl
+Use with id3ed to edit MP3 metadata: https://github.com/lukasschwab/id3ed
+
+Usage:
+  mp3-dl https://www.youtube.com/watch\?v\=MH_D26i2NyE
+```
+
 ### `pdfcat`
 
 ```
