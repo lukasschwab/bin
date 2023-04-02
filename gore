@@ -11,4 +11,4 @@ go vet ./... &&
 echo -e "${B}» golint${NC}" &&
 golint ./... &&
 echo -e "${B}» go test${NC}" &&
-go test;
+go test ./...;
