@@ -2,5 +2,5 @@
 qt
 histless
 
-# Ignore Vanta-specific utils.
-rri
+# Ignore X1-specific utils.
+bazel
