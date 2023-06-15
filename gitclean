@@ -9,8 +9,8 @@
 # deleting branches that *have* a push branch defined but that branch no longer
 # exists.
 
-blog info "If you don't prune, gitclean may miss deletable branches."
 git remote prune --dry-run origin
+blog info "If you don't prune, gitclean may miss deletable branches."
 gum confirm "   Prune remote branches?" && git remote prune origin || blog warn "Skipped pruning."
 echo ""
 
@@ -24,3 +24,4 @@ do
     gum confirm "   Delete local $branch?" && git branch -D "$branch" || blog info "Not deleted."
     echo ""
 done
+blog info "No more branches to propose deleting."
