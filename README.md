@@ -116,6 +116,15 @@ Examples:
   feedscan https://lukasschwab.me/blog/
 ```
 
+### `gitclean`
+
+```
+gitclean proposes branches to delete (GitHub remote). Requires gh, gum.
+
+Usage:
+  gitclean
+```
+
 ### `gitdone`
 
 ```
