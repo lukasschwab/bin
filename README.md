@@ -74,9 +74,10 @@ Examples:
 blog is a limited bash leveled-logging utility.
 
 Usage:
-  blog [info|warn|error] <message>
+  blog [debug|info|warn|error] <message>
 
 Examples:
+  blog debug "Here is debug context."
   blog info "Here is some useful info."
   blog warn "Here is a warning. Hmm..."
   blog error "Ack, an error! Oh no!"
