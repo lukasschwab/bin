@@ -10,6 +10,8 @@
 #
 # Use TAB to multiselect in `fzf`.
 
+set -e
+
 if [ "$#" -le 0 ]; then
   blog error "Missing git subcommand. Do you want 'gsl add'?";
   bashdoc "$BASH_SOURCE";
