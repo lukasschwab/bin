@@ -1,0 +1,21 @@
+#!/bin/bash
+# unstash from `git stash list`: fzf with preview.
+# Uses fzf: https://github.com/junegunn/fzf
+#
+# Usage:
+#	unstash
+
+set -euo pipefail
+
+get_args() {
+	# Bodge: duplicate the suffix-stripper for short stash ref.
+	git stash list \
+	| fzf -m --preview 'git stash show --color -p $(echo {} | sed "s/\:.*//") ' \
+	| sed 's/\:.*//'
+}
+
+args=$(get_args)
+
+set -x
+git stash apply "$args"
+
