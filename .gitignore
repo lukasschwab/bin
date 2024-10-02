@@ -7,3 +7,4 @@ ownerpicker
 # Ignore X1-specific utils.
 bazel
 terragrunt
+mt
