@@ -27,7 +27,7 @@ These are either dependencies of scripts in this directory, or else just softwar
 ### Images & video tools
 
 + 🍺 `imagemagick`
-+ 🍺 `youtube-dl`
++ 🍺 `yt-dlp`
 + 🍺 `webp`: includes utils like `dwebp`.
 
 ### PDF tools
