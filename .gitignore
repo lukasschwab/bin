@@ -1,10 +1,2 @@
-# Ignore compiled binaries.
-qt
-histless
-# https://gist.github.com/lukasschwab/c13ee69836cf8c4805e09de708158c12
-ownerpicker
+work
 
-# Ignore X1-specific utils.
-bazel
-terragrunt
-mt
