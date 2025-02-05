@@ -2,6 +2,14 @@
 
 A potpourri of scripts.
 
+## Fresh machine
+
+You may need to start by installing developer tools.
+
+1. Install oh-my-zsh.
+2. Clone the af-magic-custom theme in `~/.oh-my-zsh/custom/themes`.
+2. Replace the boilerplate .zshrc with `source ~/bin/binrc`.
+
 ## Common tools
 
 These are either dependencies of scripts in this directory, or else just software I use regularly.
@@ -215,7 +223,7 @@ Usage: `margins some.pdf`
 
 ```
 mp3-dl downloads a YouTube video's audio as an MP3.
-Uses youtube-dl: https://github.com/ytdl-org/youtube-dl
+Uses yt-dlp: https://github.com/yt-dlp/yt-dlp
 Use with id3ed to edit MP3 metadata: https://github.com/lukasschwab/id3ed
 
 Usage:
@@ -292,4 +300,14 @@ Usage:
   pandoc <filename.md>
   # You can pass additional pandoc arguments.
   pandoc <filename.md> --toc
+```
+
+### `unstash`
+
+```
+unstash from `git stash list`: fzf with preview.
+Uses fzf: https://github.com/junegunn/fzf
+
+Usage:
+unstash
 ```
