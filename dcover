@@ -8,9 +8,9 @@
 #   git checkout featurebranch
 #   dcover
 
-set -e
+set -euo pipefail
 
-tmp_dir=$(mktemp -d -t dcover)
+tmp_dir=$(mktemp -d)
 
 # Get feature (current) branch name.
 head=$(git rev-parse --abbrev-ref HEAD)
@@ -22,22 +22,29 @@ if [ "$head" = "$main" ]; then
   exit
 fi
 
-# Profile main branch.
+function profile() {
+  # Get coverage stats; do some jq filth to format package name and coverage percentage.
+  go test -count=1 -cover -json ./... \
+    | jq -r 'select(.Action == "output") | select(.Output | startswith("coverage")) | "\(.Package)\t\(.Output | gsub("\n"; ""))\t\(.Package)"' \
+    | sort \
+    | cut -f2-
+}
+
+# Profile main branch in a git worktree: 
+mergeBase=$(git merge-base "origin/$main" HEAD | cut -c -8)
+git worktree add merge-base "$mergeBase" > /dev/null 2>&1
 blog info "Profiling $main..."
-git checkout "$main"
-go test -coverprofile "$tmp_dir/main.out" ./...
-mainCover=$(go tool cover -func="$tmp_dir/main.out" | tr -s '\t')
+cd merge-base
+mainCover=$(profile)
+cd ..
+git worktree remove merge-base
 
 # Profile feature branch.
 blog info "Profiling $head..."
-git checkout "$head"
-go test -coverprofile "$tmp_dir/branch.out" ./...
-branchCover=$(go tool cover -func="$tmp_dir/branch.out" | tr -s '\t')
+branchCover=$(profile)
 
 # An improved version would iterate over the tabular data and output comparisons
 # package-by-package.
-
-echo # Spacing.
 blog info "Coverage impact of $head:"
 colordiff --ignore-space-change <(echo "$mainCover") <(echo "$branchCover")
 
