@@ -91,6 +91,20 @@ Examples:
   blog error "Ack, an error! Oh no!"
 ```
 
+### `commits`
+
+```
+commits in the current repo pretty-represented in fzf, with patch previews.
+Uses fzf: https://github.com/junegunn/fzf
+```
+
+### `compare`
+
+```
+compare two commits in the current GitHub repo in the browser.
+Uses gh: https://cli.github.com/
+```
+
 ### `croppedhistory`
 
 ```

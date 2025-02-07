@@ -1,0 +1,13 @@
+#!/bin/bash
+# compare two commits in the current GitHub repo in the browser.
+# Uses gh: https://cli.github.com/
+
+range=$(commits | awk "{print \$1}")
+start=$(echo "$range" | head -1)
+end=$(echo "$range" | tail -1)
+
+blog info "Comparing $start...$end"
+git diff "$start" "$end"
+
+repoURL=$(gh repo view --json url -q ".url")
+blog info "Compare at ${repoURL}/compare/$start...$end"
