@@ -18,6 +18,7 @@ These are either dependencies of scripts in this directory, or else just softwar
 
 + 🍺 `ag`
 + 🍺 `fzf`
+  + [Set up shell integration](https://github.com/junegunn/fzf?tab=readme-ov-file#setting-up-shell-integration) for <kbd>ctrl</kbd>+<kbd>R</kbd>.
 + 🍺 `watchman`
 + 🍺 `twilio`
 + 🍺 `jq`
