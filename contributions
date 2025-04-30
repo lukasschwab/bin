@@ -1,0 +1,18 @@
+#!/bin/bash
+# List GitHub contributions (commits) by a given user in a given organization.
+#
+# Uses:
+# 	+ gh: https://cli.github.com/
+# 	+ gum: https://github.com/charmbracelet/gum
+# 	+ jq: https://jqlang.org/
+
+set -euo pipefail
+
+org=$(gh org list | gum choose --header "GitHub organization")
+blog info "Org: $org"
+author=$(gum input --value="@me" --prompt "Author: ")
+blog info "Author: $author"
+today=$(date +%F)
+gh search commits --author="$author" --sort="committer-date" --owner="$org" --json="repository,sha,commit" --limit 1000 | jq > ${org}.${author}.${today}.json
+
+blog info "wrote $org.$author.$today.json"

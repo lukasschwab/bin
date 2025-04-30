@@ -106,6 +106,17 @@ compare two commits in the current GitHub repo in the browser.
 Uses gh: https://cli.github.com/
 ```
 
+### `contributions`
+
+```
+List GitHub contributions (commits) by a given user in a given organization.
+
+Uses:
+	+ gh: https://cli.github.com/
+	+ gum: https://github.com/charmbracelet/gum
+	+ jq: https://jqlang.org/
+```
+
 ### `croppedhistory`
 
 ```
