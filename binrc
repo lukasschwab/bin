@@ -22,6 +22,9 @@ export KUBE_PS1_SUFFIX=" "
 export KUBE_PS1_SYMBOL_ENABLE=false
 PROMPT='$(kube_ps1)'$PROMPT
 
+# Enable fzf CTRL-R history search.
+source <(fzf --zsh)
+
 export PATH="$PATH:$HOME/bin:$HOME/bin/work"
 export PATH="/Users/lukas.schwab/.local/bin:$PATH"
 
