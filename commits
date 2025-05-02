@@ -2,5 +2,5 @@
 # commits in the current repo pretty-represented in fzf, with patch previews.
 # Uses fzf: https://github.com/junegunn/fzf
 
-git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit \
+git log --pretty=format:'%h%d %s %cr <%an>' \
 | fzf -m --preview 'git show --color $(echo {} | awk "{print \$1}")'
