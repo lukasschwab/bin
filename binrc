@@ -11,6 +11,7 @@ plugins=(
 	command-time # git@github.com:popstas/zsh-command-time.git
 	zsh-autosuggestions # git@github.com:zsh-users/zsh-autosuggestions
 	kube-ps1
+	fzf
 )
 
 source $ZSH/oh-my-zsh.sh
