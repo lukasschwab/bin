@@ -245,6 +245,19 @@ Usage: `margins some.pdf`
   Yields some.LETTER.SCALED.pdf.
 ```
 
+### `moddoc`
+
+```
+View go docs for stdlib packages or packages in the current module.
+
+Uses fzf: https://github.com/junegunn/fzf
+
+Usage:
+	moddoc
+	moddoc ./...		Same as above.
+	moddoc ./... std	Include stdlib.
+```
+
 ### `mp3-dl`
 
 ```

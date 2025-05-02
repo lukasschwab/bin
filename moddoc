@@ -1,0 +1,33 @@
+#!/bin/bash
+# View go docs for stdlib packages or packages in the current module.
+#
+# Uses fzf: https://github.com/junegunn/fzf
+#
+# Usage:
+# 	moddoc
+# 	moddoc ./...		Same as above.
+# 	moddoc ./... std	Include stdlib.
+
+set -euo pipefail
+
+# Default to the current module.
+path="./..."
+if [ $# -gt 0 ]; then
+	path="$*"
+fi
+
+selections=$(
+go list $path \
+| fzf -m --keep-right \
+	--header "go list $path" \
+	--preview 'go doc {} | bat --plain --color=always --language=go' \
+	--preview-window='right,65%,wrap' \
+)
+
+# Iteratively dump files out bat. In practice, this might not be what I want;
+# might prefer opening them all in vim, for example.
+if [[ -n "$selections" ]]; then
+	while IFS= read -r item; do
+		go doc --all "$item" | bat --language=go --file-name "$item" --color=always --paging=never
+	done <<< "$selections"
+fi
