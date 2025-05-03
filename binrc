@@ -22,6 +22,7 @@ export KUBE_PS1_PREFIX=""
 export KUBE_PS1_SUFFIX=" "
 export KUBE_PS1_SYMBOL_ENABLE=false
 PROMPT='$(kube_ps1)'$PROMPT
+kubeoff
 
 # Enable fzf CTRL-R history search.
 source <(fzf --zsh)
