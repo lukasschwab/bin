@@ -12,6 +12,7 @@ plugins=(
 	zsh-autosuggestions # git@github.com:zsh-users/zsh-autosuggestions
 	kube-ps1
 	fzf
+	direnv
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -54,3 +55,4 @@ function prs() {
     firstDate=$(/bin/date -v "-$lookback" +%F)
     gh pr list -R alpacahq/cryptoperps --state=all --search="updated:>=${firstDate}" --author="@me"
 }
+
