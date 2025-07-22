@@ -154,12 +154,6 @@ gitdone deletes the current feature branch and returns to an updated
 main branch. See: mainbranch.
 ```
 
-### `gore`
-
-```
-GO RElease: routine checks for go packages.
-```
-
 ### `gsl`
 
 ```
