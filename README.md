@@ -293,6 +293,12 @@ Setup:
       PERSONAL_NUMBER="+0987654321" # The number that will be notified.
 ```
 
+### `pick`
+
+```
+pick a random file in in the current working directory (recursive).
+```
+
 ### `semvercompare`
 
 ```

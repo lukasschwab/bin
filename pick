@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# pick a random file in in the current working directory (recursive).
+
+find * | sort -R | head -1
