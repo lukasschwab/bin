@@ -169,16 +169,6 @@ gitdone deletes the current feature branch and returns to an updated
 main branch. See: mainbranch.
 ```
 
-### `gofind`
-
-```
-Find the path to a package buried in your GOPATH.
-Uses fzf: https://github.com/junegunn/fzf
-
-To conveniently cd to the found directory, set a function in your .zshrc:
-  goto() { cd $(gofind) }
-```
-
 ### `gore`
 
 ```
