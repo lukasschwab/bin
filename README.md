@@ -52,13 +52,6 @@ These are either dependencies of scripts in this directory, or else just softwar
 
 <!-- GENERATEDCONTENT -->
 
-### `al`
-
-```
-al opens the lexicographically last file in a directory with atom.
-The custom exemptions might become unwieldy; this may not be extensible.
-```
-
 ### `bashdoc`
 
 ```
@@ -115,14 +108,6 @@ Uses:
 	+ gh: https://cli.github.com/
 	+ gum: https://github.com/charmbracelet/gum
 	+ jq: https://jqlang.org/
-```
-
-### `croppedhistory`
-
-```
-croppedhistory removes the line numbers from history output for deduping.
-It also does some stuff I don't fully understand, because I wrote it when
-I first wrote hg.
 ```
 
 ### `dcover`
@@ -188,18 +173,6 @@ Usage, e.g.:
   gsl -b checkout - check out branches
 
 Use TAB to multiselect in `fzf`.
-```
-
-### `hf`
-
-```
-hf pipes history into fzf for finding commands you can't remember.
-```
-
-### `hg`
-
-```
-hg pipes history into grep for finding commands you can't remember.
 ```
 
 ### `lsf`
