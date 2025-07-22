@@ -169,17 +169,6 @@ Usage, e.g.:
 Use TAB to multiselect in `fzf`.
 ```
 
-### `lsf`
-
-```
-lsf pipes ls results into fzf.
-
-Standard useage:
-	lsf
-List all files:
-	lsf -a
-```
-
 ### `mainbranch`
 
 ```
