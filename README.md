@@ -302,3 +302,9 @@ Uses fzf: https://github.com/junegunn/fzf
 Usage:
 unstash
 ```
+
+### `up`
+
+```
+Jump to the root of the present git repository.
+```
