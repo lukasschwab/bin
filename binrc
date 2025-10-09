@@ -43,6 +43,11 @@ export VISUAL="$EDITOR"
 alias cdp="cd ~/Programming"
 alias cdd="cd ~/Desktop"
 
+function up() {
+    cd $(git rev-parse --show-cdup)
+}
+
+
 function bd() {
     mergeBase=$(git merge-base origin/main HEAD)
     git diff $mergeBase
