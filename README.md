@@ -275,6 +275,14 @@ Example input: https://gist.github.com/lukasschwab/6a3e2cdd78075e8923a9057f7609a
 See also: https://pandoc.org/lua-filters.html#building-images-with-tikz
 ```
 
+### `today`
+
+```
+t -e
+t -u
+t -o pipefail
+```
+
 ### `todo`
 
 ```
