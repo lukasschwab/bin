@@ -215,6 +215,13 @@ Usage:
   mp3-dl https://www.youtube.com/watch\?v\=MH_D26i2NyE
 ```
 
+### `path`
+
+```
+path sorts and prints all components of the current path. Could just as well
+be an alias instead.
+```
+
 ### `pdfcat`
 
 ```

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# path sorts and prints all components of the current path. Could just as well
+# be an alias instead.
+
+set -e
+set -u
+set -o pipefail
+
+tr ':' '\n' <<< "$PATH" | sort
