@@ -2,7 +2,8 @@
 
 # Replace all boilerplate oh-my-zsh .zshrc.
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="af-magic-custom"
+# https://gist.github.com/lukasschwab/8807cd69a833a5d214a442a38fa6bb97
+ZSH_THEME="lukas"
 
 # Several inistalled by git cloning into .oh-my-zsh/custom/plugins.
 plugins=(
