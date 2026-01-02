@@ -62,3 +62,7 @@ function prs() {
     gh pr list -R alpacahq/cryptoperps --state=all --search="updated:>=${firstDate}" --author="@me"
 }
 
+function killport() {
+    echo '🚨 Killing all processes at port' $1
+    lsof -ti tcp:$1 | xargs kill
+}
