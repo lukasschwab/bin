@@ -37,7 +37,7 @@ export CLICOLOR=1
 # Prefer nvim.
 alias vim="nvim"
 alias vi="nvim"
-alias oldvim="vim"
+alias oldvim="/usr/bin/vim"
 export EDITOR=nvim
 export VISUAL="$EDITOR"
 
