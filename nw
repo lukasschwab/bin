@@ -1,0 +1,109 @@
+#!/bin/bash
+# nw opens a new Ghostty terminal window with a selected theme.
+#
+# Uses fzf to select a theme with a color palette preview.
+# The new window launches detached from the current terminal.
+#
+# Usage:
+#   nw                    # Interactive theme picker
+#   nw --light            # Pick from light themes only
+#   nw --dark             # Pick from dark themes only
+#   nw <theme>            # Launch directly with specified theme
+#   nw --preview <theme>  # Show theme preview (used internally by fzf)
+#
+# Requires: ghostty, fzf
+
+THEMES_DIR="/Applications/Ghostty.app/Contents/Resources/ghostty/themes"
+FILTER_FLAG=""
+
+# Preview mode: called by fzf
+if [[ "$1" == "--preview" ]]; then
+    theme="$2"
+    theme_file="$THEMES_DIR/$theme"
+
+    if [[ ! -f "$theme_file" ]]; then
+        echo "Theme file not found: $theme"
+        exit 1
+    fi
+
+    echo "Theme: $theme"
+    echo ""
+
+    # Extract and display background/foreground
+    bg=$(grep "^background" "$theme_file" | head -1 | cut -d= -f2 | tr -d ' #')
+    fg=$(grep "^foreground" "$theme_file" | head -1 | cut -d= -f2 | tr -d ' #')
+
+    if [[ -n "$bg" ]]; then
+        echo "Background: #$bg"
+    fi
+    if [[ -n "$fg" ]]; then
+        echo "Foreground: #$fg"
+    fi
+    echo ""
+
+    # Display palette colors as blocks
+    echo "Palette:"
+    colors=()
+    for i in {0..15}; do
+        color=$(grep "^palette = $i=" "$theme_file" | cut -d= -f3 | tr -d ' #')
+        if [[ -n "$color" ]]; then
+            colors+=("$color")
+        fi
+    done
+
+    # Print color blocks using true color
+    # Row 1: colors 0-7 (normal)
+    row1=""
+    for i in {0..7}; do
+        if [[ -n "${colors[$i]}" ]]; then
+            row1+="\033[48;2;$((16#${colors[$i]:0:2}));$((16#${colors[$i]:2:2}));$((16#${colors[$i]:4:2}))m    \033[0m"
+        fi
+    done
+    echo -e "$row1"
+
+    # Row 2: colors 8-15 (bright)
+    row2=""
+    for i in {8..15}; do
+        if [[ -n "${colors[$i]}" ]]; then
+            row2+="\033[48;2;$((16#${colors[$i]:0:2}));$((16#${colors[$i]:2:2}));$((16#${colors[$i]:4:2}))m    \033[0m"
+        fi
+    done
+    echo -e "$row2"
+
+    echo ""
+
+    # Sample text with foreground color
+    if [[ -n "$fg" && -n "$bg" ]]; then
+        echo -e "\033[48;2;$((16#${bg:0:2}));$((16#${bg:2:2}));$((16#${bg:4:2}))m\033[38;2;$((16#${fg:0:2}));$((16#${fg:2:2}));$((16#${fg:4:2}))m Sample text on background \033[0m"
+    fi
+
+    exit 0
+fi
+
+# Parse --light/--dark flags
+if [[ "$1" == "--light" ]]; then
+    FILTER_FLAG="--light"
+    shift
+elif [[ "$1" == "--dark" ]]; then
+    FILTER_FLAG="--dark"
+    shift
+fi
+
+# If theme provided as argument, launch directly
+if [[ -n "$1" ]]; then
+    nohup ghostty --theme="$1" </dev/null >/dev/null 2>&1 &
+    disown
+    exit 0
+fi
+
+# Interactive selection with fzf
+theme=$(ghostty +list-themes --plain $FILTER_FLAG | sed 's/ (resources)$//' | fzf \
+    --preview "$0 --preview {}" \
+    --preview-window=right:50%:wrap \
+    --header="Select a theme (Enter to launch, Esc to cancel)")
+
+if [[ -n "$theme" ]]; then
+    nohup ghostty --theme="$theme" </dev/null >/dev/null 2>&1 &
+    disown
+    echo "Launched Ghostty with theme: $theme"
+fi

@@ -88,6 +88,8 @@ Examples:
   blog info "Here is some useful info."
   blog warn "Here is a warning. Hmm..."
   blog error "Ack, an error! Oh no!"
+
+NOTE 2025-12-23: consider using https://github.com/charmbracelet/gum instead.
 ```
 
 ### `commits`
@@ -220,6 +222,24 @@ Usage:
   mp3-dl https://www.youtube.com/watch\?v\=MH_D26i2NyE
 ```
 
+### `nw`
+
+```
+nw opens a new Ghostty terminal window with a selected theme.
+
+Uses fzf to select a theme with a color palette preview.
+The new window launches detached from the current terminal.
+
+Usage:
+  nw                    # Interactive theme picker
+  nw --light            # Pick from light themes only
+  nw --dark             # Pick from dark themes only
+  nw <theme>            # Launch directly with specified theme
+  nw --preview <theme>  # Show theme preview (used internally by fzf)
+
+Requires: ghostty, fzf
+```
+
 ### `path`
 
 ```
@@ -270,6 +290,12 @@ Output:
   1 - when v0 is later than v1
   0 - when v0 and v1 are the same
  -1 - when v0 is earlier than v1
+```
+
+### `setup.sh`
+
+```
+
 ```
 
 ### `tikz2svg`
