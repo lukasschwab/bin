@@ -1,11 +1,12 @@
 #!/bin/bash
+# bin-setup.sh sets up a fresh macOS machine with CLI tools, GUI apps, and dotfiles.
+#
+# Requires Homebrew. See README for full setup instructions.
+#
+# Usage:
+#   ~/bin/bin-setup.sh
 
 set -euo pipefail
-
-# =============================================================================
-# macOS Setup Script
-# Run from ~/bin after cloning: gh repo clone lukasschwab/bin ~/bin
-# =============================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

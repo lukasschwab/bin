@@ -39,7 +39,7 @@ A potpourri of scripts.
 4. Run setup script
 
     ```bash
-    ~/bin/setup.sh
+    ~/bin/bin-setup.sh
     ```
 
     This installs CLI tools, GUI applications, Oh My Zsh, plugins, and symlinks dotfiles.
@@ -83,6 +83,17 @@ Examples:
   bashdoc phone
   # Print the bashdoc for the current script.
   bashdoc "$BASH_SOURCE"
+```
+
+### `bin-setup.sh`
+
+```
+bin-setup.sh sets up a fresh macOS machine with CLI tools, GUI apps, and dotfiles.
+
+Requires Homebrew. See README for full setup instructions.
+
+Usage:
+  ~/bin/bin-setup.sh
 ```
 
 ### `blog`
@@ -300,12 +311,6 @@ Output:
   1 - when v0 is later than v1
   0 - when v0 and v1 are the same
  -1 - when v0 is earlier than v1
-```
-
-### `setup.sh`
-
-```
-
 ```
 
 ### `tikz2svg`
