@@ -1,0 +1,101 @@
+#!/bin/bash
+
+set -euox pipefail
+
+# =============================================================================
+# macOS Setup Script
+# Run from ~/bin after cloning: gh repo clone lukasschwab/bin ~/bin
+# =============================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# -----------------------------------------------------------------------------
+# Homebrew
+# -----------------------------------------------------------------------------
+if ! command -v brew &> /dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# -----------------------------------------------------------------------------
+# CLI Tools
+# -----------------------------------------------------------------------------
+brew install \
+    ag \
+    bat \
+    basictex \
+    colordiff \
+    direnv \
+    fzf \
+    gemini-cli \
+    gh \
+    ghostscript \
+    go \
+    gum \
+    imagemagick \
+    jq \
+    neovim \
+    ocrmypdf \
+    pandoc \
+    tmux \
+    uv \
+    watchman \
+    webp \
+    yt-dlp
+
+# -----------------------------------------------------------------------------
+# GUI Applications (Casks)
+# -----------------------------------------------------------------------------
+brew install --cask \
+    1password \
+    claude-code \
+    ghostty \
+    google-chrome \
+    rectangle \
+    tailscale-app \
+    visual-studio-code \
+    vlc \
+    zed
+
+# -----------------------------------------------------------------------------
+# Directories
+# -----------------------------------------------------------------------------
+mkdir -p ~/Programming
+mkdir -p ~/.config/nvim
+
+# -----------------------------------------------------------------------------
+# Oh My Zsh
+# -----------------------------------------------------------------------------
+if [ ! -d ~/.oh-my-zsh ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
+# Plugins
+if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
+    git clone https://github.com/popstas/zsh-command-time.git \
+        ~/.oh-my-zsh/custom/plugins/command-time
+fi
+
+if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+        ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
+# -----------------------------------------------------------------------------
+# Dotfiles (symlinks)
+# -----------------------------------------------------------------------------
+# Neovim config
+ln -sf "$SCRIPT_DIR/dotfiles/nvim/init.lua" ~/.config/nvim/init.lua
+
+# Zsh theme
+ln -sf "$SCRIPT_DIR/dotfiles/zsh/lukas.zsh-theme" ~/.oh-my-zsh/custom/themes/lukas.zsh-theme
+
+# -----------------------------------------------------------------------------
+# Post-install
+# -----------------------------------------------------------------------------
+echo ""
+echo "=== Setup complete ==="
+echo ""
+echo "Manual steps:"
+echo "1. Run 'gh auth login' to authenticate GitHub CLI"
+echo "2. Create ~/.zshrc with: source ~/bin/binrc"
+echo "3. Run 'source ~/.zshrc' to reload shell configuration"

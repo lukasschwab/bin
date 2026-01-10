@@ -2,51 +2,56 @@
 
 A potpourri of scripts.
 
-## Fresh machine
+## Fresh machine setup
 
-You may need to start by installing developer tools.
+### 1. Install Xcode Command Line Tools
 
-1. Install oh-my-zsh.
-2. Clone the af-magic-custom theme in `~/.oh-my-zsh/custom/themes`.
-2. Replace the boilerplate .zshrc with `source ~/bin/binrc`.
+```bash
+xcode-select --install
+```
 
-## Common tools
+### 2. Install Homebrew and gh
 
-These are either dependencies of scripts in this directory, or else just software I use regularly.
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install gh
+```
 
-### CLI utilities
+### 3. Authenticate and clone this repo
 
-+ 🍺 `ag`
-+ 🍺 `fzf`
-  + [Set up shell integration](https://github.com/junegunn/fzf?tab=readme-ov-file#setting-up-shell-integration) for <kbd>ctrl</kbd>+<kbd>R</kbd>.
-+ 🍺 `watchman`
-+ 🍺 `twilio`
-+ 🍺 `jq`
-+ 🍺 `colordiff`
-+ 🍺 `gum`
-+ 🍺 `gh`
-+ ⬇️[`gcloud`](https://cloud.google.com/sdk/docs#install_the_latest_cloud_tools_version_cloudsdk_current_version)
+```bash
+gh auth login
+gh repo clone lukasschwab/bin ~/bin
+```
 
-### Languages
+### 4. Run setup script
 
-+ 🍺 `go`
-+ 🍺 `python` via `pyenv`
-+ 🍺 `node`
+```bash
+~/bin/setup.sh
+```
 
-### Images & video tools
+This installs CLI tools, GUI applications, Oh My Zsh, plugins, and symlinks dotfiles.
 
-+ 🍺 `imagemagick`
-+ 🍺 `yt-dlp`
-+ 🍺 `webp`: includes utils like `dwebp`.
+### 5. Configure shell
 
-### PDF tools
+Create `~/.zshrc` with a single line:
 
-+ 🍺 `basictex`
-+ 🍺 `pandoc`
-+ 🍺 `ghostscript`
-+ 🍺 `ocrmypdf`
-+ 🐍 `noteshrink`
-+ :octocat: [`pdfscale`](https://github.com/tavinus/pdfScale)
+```bash
+source ~/bin/binrc
+```
+
+Your `.zshrc` can contain additional machine-specific configuration or secrets after this line.
+
+### Dotfiles
+
+Dotfiles are stored in `~/bin/dotfiles/` and symlinked to their expected locations:
+
+| Source | Symlink |
+|--------|---------|
+| `dotfiles/nvim/init.lua` | `~/.config/nvim/init.lua` |
+| `dotfiles/zsh/lukas.zsh-theme` | `~/.oh-my-zsh/custom/themes/lukas.zsh-theme` |
+
+Changes to dotfiles in this repo are automatically applied after `git pull` (symlinks read directly from the repo).
 
 ## Docs
 
