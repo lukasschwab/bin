@@ -17,6 +17,8 @@ THEMES_DIR="/Applications/Ghostty.app/Contents/Resources/ghostty/themes"
 FILTER_FLAG=""
 
 # Preview mode: called by fzf
+# TODO: This preview logic is complex; ideally we'd use Ghostty's native preview.
+# See: https://github.com/ghostty-org/ghostty/discussions/8145#discussioncomment-15464553
 if [[ "$1" == "--preview" ]]; then
     theme="$2"
     theme_file="$THEMES_DIR/$theme"
@@ -26,66 +28,150 @@ if [[ "$1" == "--preview" ]]; then
         exit 1
     fi
 
-    echo "Theme: $theme"
-    echo ""
-
-    # Extract and display background/foreground
+    # Extract colors
     bg=$(grep "^background" "$theme_file" | head -1 | cut -d= -f2 | tr -d ' #')
     fg=$(grep "^foreground" "$theme_file" | head -1 | cut -d= -f2 | tr -d ' #')
 
-    if [[ -n "$bg" ]]; then
-        echo "Background: #$bg"
-    fi
-    if [[ -n "$fg" ]]; then
-        echo "Foreground: #$fg"
-    fi
-    echo ""
-
-    # Display palette colors as blocks
-    echo "Palette:"
-    colors=()
+    # Extract palette into array
+    declare -a colors
     for i in {0..15}; do
-        color=$(grep "^palette = $i=" "$theme_file" | cut -d= -f3 | tr -d ' #')
-        if [[ -n "$color" ]]; then
-            colors+=("$color")
-        fi
+        colors[$i]=$(grep "^palette = $i=" "$theme_file" | cut -d= -f3 | tr -d ' #')
     done
 
-    # Print color blocks using true color
-    # Row 1: colors 0-7 (normal)
-    row1=""
+    # ANSI helpers using true color
+    fg_rgb() { printf '\033[38;2;%d;%d;%dm' $((16#${1:0:2})) $((16#${1:2:2})) $((16#${1:4:2})); }
+    bg_rgb() { printf '\033[48;2;%d;%d;%dm' $((16#${1:0:2})) $((16#${1:2:2})) $((16#${1:4:2})); }
+    reset=$'\033[0m'
+    bold=$'\033[1m'
+
+    # Themed line: sets background and default foreground
+    tline() { printf '%s%s' "$(bg_rgb "$bg")" "$(fg_rgb "$fg")"; }
+    # End themed line: clear to EOL (fills with bg color), then reset
+    tend() { printf '\033[K%s\n' "$reset"; }
+
+    # ─── Header ───
+    printf '%s' "$(tline)"
+    printf '%sTheme: %s%s' "$bold" "$theme" "$reset$(tline)"
+    tend
+    tline; tend
+
+    # ─── Color Palette ───
+    printf '%s' "$(tline)"
+    printf 'Palette:'
+    tend
+    printf '%s' "$(tline)"
     for i in {0..7}; do
-        if [[ -n "${colors[$i]}" ]]; then
-            row1+="\033[48;2;$((16#${colors[$i]:0:2}));$((16#${colors[$i]:2:2}));$((16#${colors[$i]:4:2}))m    \033[0m"
-        fi
+        [[ -n "${colors[$i]}" ]] && printf '%s    %s' "$(bg_rgb "${colors[$i]}")" "$(bg_rgb "$bg")"
     done
-    echo -e "$row1"
-
-    # Row 2: colors 8-15 (bright)
-    row2=""
+    tend
+    printf '%s' "$(tline)"
     for i in {8..15}; do
-        if [[ -n "${colors[$i]}" ]]; then
-            row2+="\033[48;2;$((16#${colors[$i]:0:2}));$((16#${colors[$i]:2:2}));$((16#${colors[$i]:4:2}))m    \033[0m"
-        fi
+        [[ -n "${colors[$i]}" ]] && printf '%s    %s' "$(bg_rgb "${colors[$i]}")" "$(bg_rgb "$bg")"
     done
-    echo -e "$row2"
+    tend
+    tline; tend
 
-    echo ""
+    # ─── Mock Shell Prompt ───
+    printf '%s' "$(tline)"
+    printf '%s%s%s' "$(fg_rgb "${colors[2]}")" "user" "$(fg_rgb "$fg")"
+    printf '@'
+    printf '%s%s%s' "$(fg_rgb "${colors[6]}")" "host" "$(fg_rgb "$fg")"
+    printf ' '
+    printf '%s%s%s' "$(fg_rgb "${colors[4]}")" "~/projects/demo" "$(fg_rgb "$fg")"
+    printf ' '
+    printf '%s(%s%s%s)%s' "$(fg_rgb "${colors[5]}")" "$(fg_rgb "${colors[5]}")" "main" "$(fg_rgb "${colors[5]}")" "$(fg_rgb "$fg")"
+    printf ' $ '
+    tend
+    tline; tend
 
-    # Sample text with foreground color
-    if [[ -n "$fg" && -n "$bg" ]]; then
-        echo -e "\033[48;2;$((16#${bg:0:2}));$((16#${bg:2:2}));$((16#${bg:4:2}))m\033[38;2;$((16#${fg:0:2}));$((16#${fg:2:2}));$((16#${fg:4:2}))m Sample text on background \033[0m"
+    # ─── Syntax Highlighted Code ───
+    # Color conventions:
+    #   8=comment, 5=keyword, 3=function, 2=string, 6=number, 1=error/special
+    printf '%s' "$(tline)"
+    printf '%s# A sample function%s' "$(fg_rgb "${colors[8]}")" "$(fg_rgb "$fg")"
+    tend
+
+    printf '%s' "$(tline)"
+    printf '%s%sdef%s ' "$(fg_rgb "${colors[5]}")" "$bold" "$reset$(tline)"
+    printf '%sgreet%s' "$(fg_rgb "${colors[3]}")" "$(fg_rgb "$fg")"
+    printf '(name):'
+    tend
+
+    printf '%s' "$(tline)"
+    printf '    message = '
+    printf '%s"Hello, %s' "$(fg_rgb "${colors[2]}")" "$(fg_rgb "$fg")"
+    printf '%s{%s' "$(fg_rgb "${colors[6]}")" "$(fg_rgb "$fg")"
+    printf 'name'
+    printf '%s}%s' "$(fg_rgb "${colors[6]}")" "$(fg_rgb "$fg")"
+    printf '%s!"%s' "$(fg_rgb "${colors[2]}")" "$(fg_rgb "$fg")"
+    tend
+
+    printf '%s' "$(tline)"
+    printf '    '
+    printf '%sprint%s' "$(fg_rgb "${colors[3]}")" "$(fg_rgb "$fg")"
+    printf '(message)'
+    tend
+
+    printf '%s' "$(tline)"
+    printf '    '
+    printf '%s%sreturn%s ' "$(fg_rgb "${colors[5]}")" "$bold" "$reset$(tline)"
+    printf '%s42%s' "$(fg_rgb "${colors[6]}")" "$(fg_rgb "$fg")"
+    tend
+    tline; tend
+
+    # ─── Text Samples ───
+    printf '%s' "$(tline)"
+    printf '%s%sBold%s ' "$bold" "$(fg_rgb "$fg")" "$reset$(tline)"
+    printf 'Normal '
+    printf '%sRed%s ' "$(fg_rgb "${colors[1]}")" "$(fg_rgb "$fg")"
+    printf '%sGreen%s ' "$(fg_rgb "${colors[2]}")" "$(fg_rgb "$fg")"
+    printf '%sYellow%s ' "$(fg_rgb "${colors[3]}")" "$(fg_rgb "$fg")"
+    printf '%sBlue%s' "$(fg_rgb "${colors[4]}")" "$(fg_rgb "$fg")"
+    tend
+
+    printf '%s' "$(tline)"
+    printf '%sMagenta%s ' "$(fg_rgb "${colors[5]}")" "$(fg_rgb "$fg")"
+    printf '%sCyan%s ' "$(fg_rgb "${colors[6]}")" "$(fg_rgb "$fg")"
+    printf '%sWhite%s ' "$(fg_rgb "${colors[7]}")" "$(fg_rgb "$fg")"
+    printf '%sBright%s' "$(fg_rgb "${colors[15]}")" "$(fg_rgb "$fg")"
+    tend
+    tline; tend
+
+    # ─── Sample Output ───
+    printf '%s' "$(tline)"
+    printf '%s[INFO]%s  Process started' "$(fg_rgb "${colors[4]}")" "$(fg_rgb "$fg")"
+    tend
+    printf '%s' "$(tline)"
+    printf '%s[WARN]%s  Disk usage at 80%%' "$(fg_rgb "${colors[3]}")" "$(fg_rgb "$fg")"
+    tend
+    printf '%s' "$(tline)"
+    printf '%s[ERROR]%s Connection refused' "$(fg_rgb "${colors[1]}")" "$(fg_rgb "$fg")"
+    tend
+    printf '%s' "$(tline)"
+    printf '%s[OK]%s    All tests passed' "$(fg_rgb "${colors[2]}")" "$(fg_rgb "$fg")"
+    tend
+
+    # Fill remaining vertical space with background color
+    # FZF_PREVIEW_LINES is set by fzf in preview context
+    if [[ -n "$FZF_PREVIEW_LINES" ]]; then
+        current_lines=19  # approximate lines we've printed
+        remaining=$((FZF_PREVIEW_LINES - current_lines))
+        for ((i=0; i<remaining; i++)); do
+            tline; tend
+        done
     fi
 
     exit 0
 fi
 
 # Parse --light/--dark flags
+# NOTE: Ghostty doesn't currently respect these flags.
+# See: https://github.com/ghostty-org/ghostty/discussions/10255
 if [[ "$1" == "--light" ]]; then
-    FILTER_FLAG="--light"
+    FILTER_FLAG="--color=light"
     shift
 elif [[ "$1" == "--dark" ]]; then
-    FILTER_FLAG="--dark"
+    FILTER_FLAG="--color=dark"
     shift
 fi
 
@@ -99,7 +185,7 @@ fi
 # Interactive selection with fzf
 theme=$(ghostty +list-themes --plain $FILTER_FLAG | sed 's/ (resources)$//' | fzf \
     --preview "$0 --preview {}" \
-    --preview-window=right:50%:wrap \
+    --preview-window=right:65%:wrap \
     --header="Select a theme (Enter to launch, Esc to cancel)")
 
 if [[ -n "$theme" ]]; then
