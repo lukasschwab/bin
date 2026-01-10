@@ -44,25 +44,19 @@ export VISUAL="$EDITOR"
 alias cdp="cd ~/Programming"
 alias cdd="cd ~/Desktop"
 
+alias nocolor="sed -r 's/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGK]//g'"
+
 function up() {
     cd $(git rev-parse --show-cdup)
 }
-
 
 function bd() {
     mergeBase=$(git merge-base origin/main HEAD)
     git diff $mergeBase
 }
 
-function prs() {
-    # Default to 1-week lookback. For interval format documenation, see `man date`:
-    # val[y|m|w|d|H|M|S]. Converted to date for GitHub query.
-    lookback="${1:-1w}"
-    firstDate=$(/bin/date -v "-$lookback" +%F)
-    gh pr list -R alpacahq/cryptoperps --state=all --search="updated:>=${firstDate}" --author="@me"
-}
-
 function killport() {
     echo '🚨 Killing all processes at port' $1
     lsof -ti tcp:$1 | xargs kill
 }
+
