@@ -101,6 +101,93 @@ else
 fi
 
 # -----------------------------------------------------------------------------
+# macOS System Preferences
+# -----------------------------------------------------------------------------
+echo ""
+if gum confirm "Configure macOS system preferences?" --default=true; then
+    echo ""
+    echo "--- Trackpad Settings ---"
+
+    # Trackpad speed (default is 1.0, higher = faster)
+    if gum confirm "Set trackpad speed to fast (1.5)?" --default=true; then
+        defaults write -g com.apple.trackpad.scaling -float 1.5
+        echo "Trackpad speed set to 1.5"
+    fi
+
+    # Natural scrolling (true = natural/inverted, false = traditional)
+    if gum confirm "Disable natural scrolling (use traditional scroll direction)?" --default=true; then
+        defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+        echo "Natural scrolling disabled"
+    fi
+
+    # Tap to click
+    if gum confirm "Enable tap to click?" --default=true; then
+        defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+        defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+        defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+        echo "Tap to click enabled"
+    fi
+
+    echo ""
+    echo "--- Dock Settings ---"
+
+    # Dock position
+    DOCK_POSITION=$(gum choose --header "Dock position:" "left (Recommended)" "bottom" "right")
+    DOCK_POSITION=${DOCK_POSITION%% *}  # Remove " (Recommended)" suffix
+    defaults write com.apple.dock orientation -string "$DOCK_POSITION"
+    echo "Dock position set to $DOCK_POSITION"
+
+    # Dock size
+    if gum confirm "Set dock size to small (42)?" --default=true; then
+        defaults write com.apple.dock tilesize -int 42
+        echo "Dock size set to 42"
+    fi
+
+    # Auto-hide dock
+    if gum confirm "Enable dock auto-hide?" --default=true; then
+        defaults write com.apple.dock autohide -bool true
+        echo "Dock auto-hide enabled"
+    fi
+
+    # Show recent apps in dock
+    if gum confirm "Hide recent apps in dock?" --default=true; then
+        defaults write com.apple.dock show-recents -bool false
+        echo "Recent apps hidden from dock"
+    fi
+
+    echo ""
+    echo "--- Finder & Desktop Settings ---"
+
+    # Show file extensions
+    if gum confirm "Show all file extensions?" --default=true; then
+        defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+        echo "All file extensions visible"
+    fi
+
+    # Desktop icon size
+    if gum confirm "Set desktop icon size to small (44)?" --default=true; then
+        /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 44" ~/Library/Preferences/com.apple.finder.plist 2>/dev/null || true
+        echo "Desktop icon size set to 44"
+    fi
+
+    # Desktop icon arrangement
+    if gum confirm "Arrange desktop icons by date added?" --default=true; then
+        /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy dateAdded" ~/Library/Preferences/com.apple.finder.plist 2>/dev/null || true
+        echo "Desktop icons arranged by date added"
+    fi
+
+    # Restart affected apps
+    echo ""
+    echo "Restarting Dock and Finder to apply changes..."
+    killall Dock 2>/dev/null || true
+    killall Finder 2>/dev/null || true
+
+    echo "macOS preferences configured!"
+else
+    echo "Skipping macOS preferences configuration."
+fi
+
+# -----------------------------------------------------------------------------
 # Post-install
 # -----------------------------------------------------------------------------
 echo ""
