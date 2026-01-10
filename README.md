@@ -4,43 +4,53 @@ A potpourri of scripts.
 
 ## Fresh machine setup
 
-### 1. Install Xcode Command Line Tools
+1. Install Xcode Command Line Tools
 
-```bash
-xcode-select --install
-```
+    ```bash
+    xcode-select --install
+    ```
 
-### 2. Install Homebrew and gh
+2. Install Homebrew and gh
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install gh
-```
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
 
-### 3. Authenticate and clone this repo
+    On Apple Silicon, add Homebrew to your PATH (the installer prints these instructions):
 
-```bash
-gh auth login
-gh repo clone lukasschwab/bin ~/bin
-```
+    ```bash
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    ```
 
-### 4. Run setup script
+    Then install gh:
 
-```bash
-~/bin/setup.sh
-```
+    ```bash
+    brew install gh
+    ```
 
-This installs CLI tools, GUI applications, Oh My Zsh, plugins, and symlinks dotfiles.
+3. Authenticate and clone this repo
 
-### 5. Configure shell
+    ```bash
+    gh auth login
+    gh repo clone lukasschwab/bin ~/bin
+    ```
 
-Create `~/.zshrc` with a single line:
+4. Run setup script
 
-```bash
-source ~/bin/binrc
-```
+    ```bash
+    ~/bin/setup.sh
+    ```
 
-Your `.zshrc` can contain additional machine-specific configuration or secrets after this line.
+    This installs CLI tools, GUI applications, Oh My Zsh, plugins, and symlinks dotfiles.
+
+5. Configure shell: create `~/.zshrc` with a single line:
+
+    ```bash
+    source ~/bin/binrc
+    ```
+
+    Your `.zshrc` can contain additional machine-specific configuration or secrets after this line.
 
 ### Dotfiles
 

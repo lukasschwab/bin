@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euox pipefail
+set -euo pipefail
 
 # =============================================================================
 # macOS Setup Script
@@ -10,14 +10,7 @@ set -euox pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # -----------------------------------------------------------------------------
-# Homebrew
-# -----------------------------------------------------------------------------
-if ! command -v brew &> /dev/null; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-# -----------------------------------------------------------------------------
-# CLI Tools
+# CLI Tools (requires Homebrew)
 # -----------------------------------------------------------------------------
 brew install \
     ag \
@@ -50,6 +43,7 @@ brew install --cask \
     claude-code \
     ghostty \
     google-chrome \
+    obsidian \
     rectangle \
     tailscale-app \
     visual-studio-code \
