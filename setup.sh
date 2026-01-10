@@ -90,6 +90,22 @@ ln -sf "$SCRIPT_DIR/dotfiles/nvim/init.lua" ~/.config/nvim/init.lua
 ln -sf "$SCRIPT_DIR/dotfiles/zsh/lukas.zsh-theme" ~/.oh-my-zsh/custom/themes/lukas.zsh-theme
 
 # -----------------------------------------------------------------------------
+# Git Configuration
+# -----------------------------------------------------------------------------
+echo ""
+if gum confirm "Configure git user.name and user.email?"; then
+    CURRENT_NAME=$(git config --global user.name 2>/dev/null || echo "")
+    CURRENT_EMAIL=$(git config --global user.email 2>/dev/null || echo "")
+    GIT_NAME=$(gum input --placeholder "Your Name" --value "$CURRENT_NAME" --header "Git user.name:")
+    GIT_EMAIL=$(gum input --placeholder "your_email@example.com" --value "$CURRENT_EMAIL" --header "Git user.email:")
+    git config --global user.name "$GIT_NAME"
+    git config --global user.email "$GIT_EMAIL"
+    echo "Git configured: $GIT_NAME <$GIT_EMAIL>"
+else
+    echo "Skipping git configuration."
+fi
+
+# -----------------------------------------------------------------------------
 # Post-install
 # -----------------------------------------------------------------------------
 echo ""
