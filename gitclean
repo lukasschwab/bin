@@ -21,7 +21,18 @@ do
     GH_PAGER=cat gh pr list --state merged -H $branch \
         --json number,title,mergedAt,url \
         --template '{{range .}}{{printf "#%v" .number | autocolor "magenta"}} {{.title}} {{printf "m. %v %v\n" (timeago .mergedAt) .url | autocolor "grey"}}{{end}}'
-    gum confirm "   Delete local $branch?" && git branch -D "$branch" || blog info "Not deleted."
+
+    # Check if branch is checked out in a worktree
+    worktree_path=$(git worktree list --porcelain | grep -B2 "^branch refs/heads/$branch$" | head -1 | sed 's/^worktree //')
+
+    if [[ -n "$worktree_path" ]]; then
+        gum confirm "   Delete worktree ($worktree_path) and branch $branch?" && {
+            git worktree remove "$worktree_path"
+            git branch -D "$branch"
+        } || blog info "Not deleted."
+    else
+        gum confirm "   Delete local $branch?" && git branch -D "$branch" || blog info "Not deleted."
+    fi
     echo ""
 done
 blog info "No more branches to propose deleting."
