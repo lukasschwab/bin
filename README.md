@@ -243,6 +243,17 @@ Usage:
   mp3-dl https://www.youtube.com/watch\?v\=MH_D26i2NyE
 ```
 
+### `nato`
+
+```
+nato bar returns Bravo Alfa Romeo. I use this most often when talking to
+customer service and need to read out a long alphanumeric string, which has
+only happened a couple of times in my whole life. But it’s sometimes useful!
+
+Blog post source: https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/
+Source: https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/bin/bin/nato
+```
+
 ### `nw`
 
 ```
