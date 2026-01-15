@@ -23,6 +23,7 @@ brew install \
     gemini-cli \
     gh \
     ghostscript \
+	glow \
     go \
     gum \
     imagemagick \
@@ -34,6 +35,7 @@ brew install \
     uv \
     watchman \
     webp \
+	wget \
     yt-dlp
 
 # -----------------------------------------------------------------------------
@@ -41,6 +43,7 @@ brew install \
 # -----------------------------------------------------------------------------
 brew install --cask \
     1password \
+	caffeine \
     claude-code \
     ghostty \
     google-chrome \
