@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# straightquote converts "smart quotes" to "straight quotes" (sometimes called
+# "dumb quotes").
+#
+# Adapted from:
+# - https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/
+# - https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/bin/bin/straightquote
+
+sed "s/[“”]/\"/g; s/[‘’]/'/g"

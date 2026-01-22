@@ -197,6 +197,17 @@ Usage, e.g.:
 Use TAB to multiselect in `fzf`.
 ```
 
+### `line`
+
+```
+line 10 prints line 10 from stdin. For example, cat some_big_file | line 10
+prints line 10 of a file.
+
+Adapted from:
+- https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/
+- https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/bin/bin/line
+```
+
 ### `mainbranch`
 
 ```
@@ -321,6 +332,17 @@ Output:
   1 - when v0 is later than v1
   0 - when v0 and v1 are the same
  -1 - when v0 is earlier than v1
+```
+
+### `straightquote`
+
+```
+straightquote converts "smart quotes" to "straight quotes" (sometimes called
+"dumb quotes").
+
+Adapted from:
+- https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/
+- https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/bin/bin/straightquote
 ```
 
 ### `tikz2svg`
