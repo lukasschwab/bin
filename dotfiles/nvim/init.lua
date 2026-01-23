@@ -146,6 +146,14 @@ require("lazy").setup({
       vim.cmd([[colorscheme tokyonight]])
     end,
   },
+
+  -- Experimental: dim inactive portions of code
+  -- Usage:
+  --	:Twilight	toggle twilight
+  {
+	  "folke/twilight.nvim",
+	  opts = {}
+  },
 })
 
 -- Basic Settings
