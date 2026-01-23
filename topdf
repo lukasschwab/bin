@@ -19,7 +19,7 @@ PDFNAME=${NAME}.pdf
 # PROCESSING
 sed -e 's/––/---/g' ${INFILE} | # Better em-dashes
 sed -e 's/<br>/\\\newline /g' | # Support <br> for line breaks. Add any other operations after this...
-pandoc --from=markdown --pdf-engine=xelatex -o ${PDFNAME} --variable urlcolor=NavyBlue "${@:2:99}" # ...and before this.
+pandoc --from=markdown --pdf-engine=xelatex --request-header "User-Agent:pandoc" -o ${PDFNAME} --variable urlcolor=NavyBlue "${@:2:99}"
 
 # Exit code from the last command.
 pandoc_status="$?"
