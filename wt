@@ -1,0 +1,61 @@
+#!/bin/bash
+# wt creates a new git worktree and opens a terminal window in it.
+#
+# Uses gum for interactive input and nw to open the new terminal.
+#
+# Usage:
+#   wt  # Interactive worktree creation
+#
+# Requires: git, gum, fzf, nw
+
+set -e
+
+# Exit if not in a git repo
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "Error: not in a git repository"
+    exit 1
+fi
+
+# Get the branch name from user
+BRANCH_NAME=$(gum input --placeholder "Branch name (e.g., user/feature-name)")
+if [[ -z "$BRANCH_NAME" ]]; then
+    echo "Error: branch name is required"
+    exit 1
+fi
+
+# Determine main branch name
+MAIN_BRANCH=$(mainbranch)
+
+# Get the starting point from user
+GIT_REF=$(printf '%s\norigin/%s\nHEAD' "$MAIN_BRANCH" "$MAIN_BRANCH" | fzf \
+    --preview 'git show --name-only {}' \
+    --header "Select starting point for new branch")
+
+if [[ -z "$GIT_REF" ]]; then
+    echo "Error: starting point is required"
+    exit 1
+fi
+
+# Get git root directory
+GIT_ROOT=$(git rev-parse --show-toplevel)
+PARENT_DIR=$(dirname "$GIT_ROOT")
+
+# Extract directory name from branch (part after last /)
+DIR_NAME="${BRANCH_NAME##*/}"
+
+# Create worktree path as sibling to git root
+WORKTREE_PATH="$PARENT_DIR/$DIR_NAME"
+
+# Create the worktree with new branch
+git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$GIT_REF"
+
+# Get absolute path (resolve any symlinks or relative components)
+ABS_WORKTREE_PATH=$(cd "$WORKTREE_PATH" && pwd -P)
+
+# Log the result
+RELATIVE_PATH=$(python3 -c "import os; print(os.path.relpath('$WORKTREE_PATH'))")
+gum log --level info "Branch: $BRANCH_NAME"
+gum log --level info "Worktree: $RELATIVE_PATH"
+
+# Open new terminal window in the worktree
+nw --working-directory "$ABS_WORKTREE_PATH"

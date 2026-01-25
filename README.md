@@ -278,6 +278,7 @@ Usage:
   nw --dark             # Pick from dark themes only
   nw <theme>            # Launch directly with specified theme
   nw --preview <theme>  # Show theme preview (used internally by fzf)
+  nw --working-directory <dir>  # Open in specified directory
 
 Requires: ghostty, fzf
 ```
@@ -394,4 +395,17 @@ Uses fzf: https://github.com/junegunn/fzf
 
 Usage:
 unstash
+```
+
+### `wt`
+
+```
+wt creates a new git worktree and opens a terminal window in it.
+
+Uses gum for interactive input and nw to open the new terminal.
+
+Usage:
+  wt  # Interactive worktree creation
+
+Requires: git, gum, fzf, nw
 ```
