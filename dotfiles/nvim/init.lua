@@ -154,6 +154,15 @@ require("lazy").setup({
 	  "folke/twilight.nvim",
 	  opts = {}
   },
+  -- Experimental: show an outline of the current buffer
+  -- Usage:
+  -- 	:Outline	toggle outline
+  {
+	  "hedyhli/outline.nvim",
+	  lazy = true,
+	  cmd = {"Outline"},
+	  opts = {}
+  },
 })
 
 -- Basic Settings
