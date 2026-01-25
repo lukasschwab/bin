@@ -10,11 +10,13 @@
 #   nw --dark             # Pick from dark themes only
 #   nw <theme>            # Launch directly with specified theme
 #   nw --preview <theme>  # Show theme preview (used internally by fzf)
+#   nw --working-directory <dir>  # Open in specified directory
 #
 # Requires: ghostty, fzf
 
 THEMES_DIR="/Applications/Ghostty.app/Contents/Resources/ghostty/themes"
 FILTER_FLAG=""
+WORKING_DIR=""
 
 # Preview mode: called by fzf
 # TODO: This preview logic is complex; ideally we'd use Ghostty's native preview.
@@ -164,20 +166,38 @@ if [[ "$1" == "--preview" ]]; then
     exit 0
 fi
 
-# Parse --light/--dark flags
-# NOTE: Ghostty doesn't currently respect these flags.
+# Parse flags
+# NOTE: Ghostty doesn't currently respect --light/--dark flags.
 # See: https://github.com/ghostty-org/ghostty/discussions/10255
-if [[ "$1" == "--light" ]]; then
-    FILTER_FLAG="--color=light"
-    shift
-elif [[ "$1" == "--dark" ]]; then
-    FILTER_FLAG="--color=dark"
-    shift
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --light)
+            FILTER_FLAG="--color=light"
+            shift
+            ;;
+        --dark)
+            FILTER_FLAG="--color=dark"
+            shift
+            ;;
+        --working-directory)
+            WORKING_DIR="$2"
+            shift 2
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Build working directory argument if specified
+WORKING_DIR_ARG=""
+if [[ -n "$WORKING_DIR" ]]; then
+    WORKING_DIR_ARG="--working-directory=$WORKING_DIR"
 fi
 
 # If theme provided as argument, launch directly
 if [[ -n "$1" ]]; then
-    nohup ghostty --theme="$1" </dev/null >/dev/null 2>&1 &
+    nohup ghostty --theme="$1" $WORKING_DIR_ARG </dev/null >/dev/null 2>&1 &
     disown
     exit 0
 fi
@@ -189,7 +209,7 @@ theme=$(ghostty +list-themes --plain $FILTER_FLAG | sed 's/ (resources)$//' | fz
     --header="Select a theme (Enter to launch, Esc to cancel)")
 
 if [[ -n "$theme" ]]; then
-    nohup ghostty --theme="$theme" </dev/null >/dev/null 2>&1 &
+    nohup ghostty --theme="$theme" $WORKING_DIR_ARG </dev/null >/dev/null 2>&1 &
     disown
     echo "Launched Ghostty with theme: $theme"
 fi
