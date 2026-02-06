@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+# imgclean - Display images and offer them for deletion
+# Uses viu for display, gum for confirmation, trash for deletion
+
+set -euo pipefail
+
+trap 'echo; echo "Interrupted."; exit 130' INT
+
+# Image extensions to look for
+IMAGE_EXTENSIONS=("jpg" "jpeg" "png" "gif" "bmp" "webp" "tiff" "tif" "svg" "ico")
+
+build_glob_pattern() {
+    local pattern=""
+    for ext in "${IMAGE_EXTENSIONS[@]}"; do
+        pattern+="*.${ext} *.${ext^^} "
+    done
+    echo "$pattern"
+}
+
+find_images() {
+    shopt -s nullglob
+    local files=()
+    for ext in "${IMAGE_EXTENSIONS[@]}"; do
+        # Match both lowercase and uppercase extensions
+        for f in *."$ext" *."${ext^^}"; do
+            [[ -f "$f" ]] && files+=("$f")
+        done
+    done
+    shopt -u nullglob
+    printf '%s\n' "${files[@]}" | sort -u
+}
+
+interactive_mode() {
+    local images=("$@")
+
+    if [[ ${#images[@]} -eq 0 ]]; then
+        # No arguments provided, find all images
+        mapfile -t images < <(find_images)
+    fi
+
+    if [[ ${#images[@]} -eq 0 ]]; then
+        echo "No image files found."
+        exit 0
+    fi
+
+    echo "Found ${#images[@]} image(s)"
+    echo
+
+    for img in "${images[@]}"; do
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "File: $img"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        viu "$img" 2>/dev/null || echo "(Could not display image)"
+        echo
+
+        local rc=0
+        local prompt="Delete this file?"
+        local action_msg="Moved to trash"
+        local cmd
+
+        if [[ -n "$EXEC_CMD" ]]; then
+            cmd="${EXEC_CMD//\{\}/$img}"
+            prompt="Run: $cmd"
+            action_msg="Executed"
+        fi
+
+        gum confirm "$prompt" --default=false || rc=$?
+
+        if [[ $rc -eq 0 ]]; then
+            if [[ -n "$EXEC_CMD" ]]; then
+                eval "$cmd"
+            else
+                trash "$img"
+            fi
+            echo "$action_msg: $img"
+        elif [[ $rc -eq 1 ]]; then
+            echo "Skipped: $img"
+        else
+            echo
+            echo "Interrupted."
+            exit 130
+        fi
+        echo
+    done
+}
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] [FILES...]
+
+Display image files and offer them for deletion.
+
+Options:
+    -e, --exec CMD  Run CMD instead of trash. Use {} for the filename.
+    -h, --help      Show this help message
+
+If no files are specified, all images in the current directory are shown.
+You can pass globs or file paths: imgclean Screen* or imgclean *.png
+
+Examples:
+    imgclean Screen*
+    imgclean --exec "mogrify -resize 50% {}" *.png
+    imgclean -e "mv {} ~/archive/"
+
+Dependencies: viu, gum, trash (brew install viu gum trash)
+EOF
+}
+
+EXEC_CMD=""
+
+main() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            -e|--exec)
+                EXEC_CMD="$2"
+                shift 2
+                ;;
+            -*)
+                echo "Unknown option: $1" >&2
+                usage >&2
+                exit 1
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    interactive_mode "$@"
+}
+
+main "$@"
