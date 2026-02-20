@@ -16,10 +16,26 @@ fi
 INFILE=$1
 NAME=${1%.md}
 PDFNAME=${NAME}.pdf
+
+# Check for --tufte flag
+TUFTE_ARGS=()
+PASSTHROUGH_ARGS=()
+for arg in "${@:2}"; do
+    if [[ "$arg" == "--tufte" ]]; then
+        TUFTE_ARGS=(
+            --variable documentclass=tufte-handout
+            --variable classoption=notoc
+            -V mainfont="Palatino"
+        )
+    else
+        PASSTHROUGH_ARGS+=("$arg")
+    fi
+done
+
 # PROCESSING
 sed -e 's/––/---/g' ${INFILE} | # Better em-dashes
 sed -e 's/<br>/\\\newline /g' | # Support <br> for line breaks. Add any other operations after this...
-pandoc --from=markdown --pdf-engine=xelatex --request-header "User-Agent:pandoc" -o ${PDFNAME} --variable urlcolor=NavyBlue "${@:2:99}"
+pandoc --from=markdown --pdf-engine=xelatex --request-header "User-Agent:pandoc" -o ${PDFNAME} --variable urlcolor=NavyBlue "${TUFTE_ARGS[@]}" "${PASSTHROUGH_ARGS[@]}"
 
 # Exit code from the last command.
 pandoc_status="$?"
