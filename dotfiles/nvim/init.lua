@@ -183,6 +183,18 @@ require("lazy").setup({
 	  opts = {
 		  auto_open = true,
 	  },
+	  config = function(_, opts)
+		  require("epub").setup(opts)
+		  -- Show TOC chapter selector when opening an epub
+		  local epub = require("epub")
+		  local orig_open = epub.open_epub
+		  epub.open_epub = function(path)
+			  orig_open(path)
+			  vim.schedule(function()
+				  require("epub.view").show_toc()
+			  end)
+		  end
+	  end,
   },
   -- Mood Atlas: emotion thesaurus
   -- Usage:
