@@ -12,6 +12,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Default zipPlugin_ext with .epub removed so epub.nvim handles it instead
+vim.g.zipPlugin_ext = "*.aar,*.apk,*.celzip,*.crtx,*.docm,*.docx,*.dotm,*.dotx,*.ear,*.gcsx,*.glox,*.gqsx,*.ja,*.jar,*.kmz,*.odb,*.odc,*.odf,*.odg,*.odi,*.odm,*.odp,*.ods,*.odt,*.otc,*.otf,*.otg,*.oth,*.oti,*.otp,*.ots,*.ott,*.oxt,*.potm,*.potx,*.ppam,*.ppsm,*.ppsx,*.pptm,*.pptx,*.sldx,*.thmx,*.vdw,*.war,*.wsz,*.xap,*.xlam,*.xlsb,*.xlsm,*.xlsx,*.xltm,*.xltx,*.xpi,*.zip"
+
 require("lazy").setup({
   -- Treesitter for syntax highlighting
   {
@@ -162,6 +165,29 @@ require("lazy").setup({
 	  lazy = true,
 	  cmd = {"Outline"},
 	  opts = {}
+  },
+  -- EPUB reader
+  -- Usage:
+  --	]c / [c	next/prev chapter
+  --	gt	table of contents
+  --	gi	view image
+  {
+	  "CrystalDime/epub.nvim",
+	  opts = {
+		  auto_open = true,
+	  },
+  },
+  -- Mood Atlas: emotion thesaurus
+  -- Usage:
+  --	<leader>m	pick a more precise synonym
+  --	:MoodAtlas	pick a more precise synonym
+  {
+	  "lukasschwab/mood-atlas.nvim",
+	  keys = {
+		  { "<leader>m", desc = "Mood Atlas" },
+	  },
+	  cmd = "MoodAtlas",
+	  opts = {},
   },
 })
 
