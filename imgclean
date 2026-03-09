@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # imgclean - Display images and offer them for deletion
-# Uses viu for display, gum for confirmation, trash for deletion
+# Uses chafa for display, gum for confirmation, trash for deletion
 
 set -euo pipefail
 
@@ -50,7 +50,7 @@ interactive_mode() {
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo "File: $img"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        viu "$img" 2>/dev/null || echo "(Could not display image)"
+        chafa "$img" 2>/dev/null || echo "(Could not display image)"
         echo
 
         local rc=0
@@ -84,6 +84,64 @@ interactive_mode() {
     done
 }
 
+select_mode() {
+    local images=("$@")
+
+    if [[ ${#images[@]} -eq 0 ]]; then
+        mapfile -t images < <(find_images)
+    fi
+
+    if [[ ${#images[@]} -eq 0 ]]; then
+        echo "No image files found."
+        exit 0
+    fi
+
+    local action_desc="trash {}"
+    if [[ -n "$EXEC_CMD" ]]; then
+        action_desc="$EXEC_CMD"
+    fi
+
+    local selected
+    selected=$(printf '%s\n' "${images[@]}" | fzf \
+        --multi \
+        --header "Action: $action_desc | TAB=select, ENTER=confirm, Ctrl-A=all" \
+        --preview 'printf "\e_Ga=d\e\\"; chafa --format=kitty --size=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} {}' \
+        --preview-window "right:50%" \
+        --bind "ctrl-a:select-all,ctrl-d:deselect-all" \
+    ) || {
+        echo "No files selected."
+        exit 0
+    }
+
+    if [[ -z "$selected" ]]; then
+        echo "No files selected."
+        exit 0
+    fi
+
+    local count
+    count=$(echo "$selected" | wc -l | tr -d ' ')
+
+    echo "Selected $count file(s):"
+    echo "$selected"
+    echo
+
+    local confirm_prompt="Run '$action_desc' on these files?"
+    if gum confirm "$confirm_prompt"; then
+        echo "$selected" | while IFS= read -r file; do
+            if [[ -n "$EXEC_CMD" ]]; then
+                local cmd="${EXEC_CMD//\{\}/$file}"
+                eval "$cmd"
+                echo "Executed: $file"
+            else
+                trash "$file"
+                echo "Trashed: $file"
+            fi
+        done
+    else
+        echo "Cancelled."
+    fi
+}
+
 usage() {
     cat <<EOF
 Usage: $(basename "$0") [OPTIONS] [FILES...]
@@ -91,6 +149,7 @@ Usage: $(basename "$0") [OPTIONS] [FILES...]
 Display image files and offer them for deletion.
 
 Options:
+    -s, --select    Use fzf multi-select mode with image preview
     -e, --exec CMD  Run CMD instead of trash. Use {} for the filename.
     -h, --help      Show this help message
 
@@ -99,14 +158,16 @@ You can pass globs or file paths: imgclean Screen* or imgclean *.png
 
 Examples:
     imgclean Screen*
+    imgclean --select *.png
     imgclean --exec "mogrify -resize 50% {}" *.png
-    imgclean -e "mv {} ~/archive/"
+    imgclean -s -e "mv {} ~/archive/"
 
-Dependencies: viu, gum, trash (brew install viu gum trash)
+Dependencies: chafa, gum, fzf, trash (brew install chafa gum fzf trash)
 EOF
 }
 
 EXEC_CMD=""
+SELECT_MODE=false
 
 main() {
     while [[ $# -gt 0 ]]; do
@@ -114,6 +175,10 @@ main() {
             -h|--help)
                 usage
                 exit 0
+                ;;
+            -s|--select)
+                SELECT_MODE=true
+                shift
                 ;;
             -e|--exec)
                 EXEC_CMD="$2"
@@ -130,7 +195,11 @@ main() {
         esac
     done
 
-    interactive_mode "$@"
+    if [[ "$SELECT_MODE" == true ]]; then
+        select_mode "$@"
+    else
+        interactive_mode "$@"
+    fi
 }
 
 main "$@"
