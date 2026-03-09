@@ -183,10 +183,7 @@ setopt prompt_subst
 # $FG[032]%~\
 
 # primary prompt
-PROMPT='${return_code}$FG[032]\
-$(shrink_path -t -l)\
-$(git_prompt_info) \
-$FG[105]%(!.#.»)%{$reset_color%} '
+PROMPT='${return_code}$FG[032]$(shrink_path -t -l)$(git_prompt_info) $FG[105]%(!.#.»)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
 
 # color vars
