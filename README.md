@@ -197,6 +197,13 @@ Usage, e.g.:
 Use TAB to multiselect in `fzf`.
 ```
 
+### `imgclean`
+
+```
+imgclean - Display images and offer them for deletion
+Uses chafa for display, gum for confirmation, trash for deletion
+```
+
 ### `line`
 
 ```
@@ -385,6 +392,12 @@ Usage:
   pandoc <filename.md>
   # You can pass additional pandoc arguments.
   pandoc <filename.md> --toc
+```
+
+### `tss`
+
+```
+Switch between Tailscale tailnets.
 ```
 
 ### `unstash`

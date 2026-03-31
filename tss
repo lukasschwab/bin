@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Switch between Tailscale tailnets.
+
+set -euo pipefail
+
+# Get the list, skip the header line
+lines=$(tailscale switch --list 2>/dev/null | tail -n +2)
+
+if [[ -z "$lines" ]]; then
+    echo "No Tailscale accounts found."
+    exit 1
+fi
+
+# Build display lines, putting inactive entries first so the cursor defaults
+# to a non-active account.
+display=()
+ids=()
+active_display=""
+active_id=""
+while IFS= read -r line; do
+    id=$(echo "$line" | awk '{print $1}')
+    tailnet=$(echo "$line" | awk '{print $2}')
+    account=$(echo "$line" | awk '{print $3}')
+    if [[ "$account" == *"*" ]] || [[ "$tailnet" == *"*" ]]; then
+        account="${account%\*}"
+        tailnet="${tailnet%\*}"
+        active_display="${tailnet} -> ${account} (active)"
+        active_id="$id"
+    else
+        display+=("${tailnet} -> ${account}")
+        ids+=("$id")
+    fi
+done <<< "$lines"
+# Fast path: two tailnets with one active — switch immediately
+if [[ ${#ids[@]} -eq 1 && -n "$active_id" ]]; then
+    echo "Switching to ${display[0]}..."
+    tailscale switch "${ids[0]}"
+    exit 0
+fi
+
+# Append active entry at the end
+if [[ -n "$active_display" ]]; then
+    display+=("$active_display")
+    ids+=("$active_id")
+fi
+
+selected=$(printf '%s\n' "${display[@]}" | gum choose --header "Switch Tailscale account")
+
+if [[ -z "$selected" ]]; then
+    exit 0
+fi
+
+# Find the index of the selected entry
+for i in "${!display[@]}"; do
+    if [[ "${display[$i]}" == "$selected" ]]; then
+        echo "Switching to ${display[$i]}..."
+        tailscale switch "${ids[$i]}"
+        exit 0
+    fi
+done
