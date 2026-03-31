@@ -208,6 +208,14 @@ require("lazy").setup({
 	  cmd = "MoodAtlas",
 	  opts = {},
   },
+  -- Obsidian-style Markdown extensions
+  {
+	  "lukasschwab/knapping.nvim",
+	  ft = "markdown",
+	  opts = {
+		  use_nerd_font = true,
+	  },
+  },
 })
 
 -- Basic Settings
