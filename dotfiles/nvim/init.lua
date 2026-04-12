@@ -16,6 +16,10 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.zipPlugin_ext = "*.aar,*.apk,*.celzip,*.crtx,*.docm,*.docx,*.dotm,*.dotx,*.ear,*.gcsx,*.glox,*.gqsx,*.ja,*.jar,*.kmz,*.odb,*.odc,*.odf,*.odg,*.odi,*.odm,*.odp,*.ods,*.odt,*.otc,*.otf,*.otg,*.oth,*.oti,*.otp,*.ots,*.ott,*.oxt,*.potm,*.potx,*.ppam,*.ppsm,*.ppsx,*.pptm,*.pptx,*.sldx,*.thmx,*.vdw,*.war,*.wsz,*.xap,*.xlam,*.xlsb,*.xlsm,*.xlsx,*.xltm,*.xltx,*.xpi,*.zip"
 
 require("lazy").setup({
+  {
+    "wsdjeg/vim-fetch"
+  },
+  
   -- Treesitter for syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
