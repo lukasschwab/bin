@@ -164,9 +164,31 @@ require("lazy").setup({
   -- Experimental: dim inactive portions of code
   -- Usage:
   --	:Twilight	toggle twilight
+  -- Using a personal fork (fix/markdown-expand branch) that fixes two
+  -- bugs preventing Markdown constructs from highlighting as units.
+  -- See https://github.com/folke/twilight.nvim/issues/16
+  --
+  -- context=0 disables line-based padding so the treesitter `expand`
+  -- types fully control the highlighted region. Do NOT add `section`
+  -- to the list -- it spans the whole file and would highlight all.
   {
-	  "folke/twilight.nvim",
-	  opts = {}
+	  "lukasschwab/twilight.nvim",
+	  branch = "fix/markdown-expand",
+	  opts = {
+		  context = 0,
+		  expand = {
+			  -- defaults
+			  "function",
+			  "method",
+			  "table",
+			  "if_statement",
+			  -- markdown
+			  "paragraph",
+			  "list",
+			  "fenced_code_block",
+			  "block_quote",
+		  },
+	  },
   },
   -- Experimental: show an outline of the current buffer
   -- Usage:
