@@ -25,7 +25,18 @@ for arg in "${@:2}"; do
         TUFTE_ARGS=(
             --variable documentclass=tufte-handout
             --variable classoption=notoc
-            -V mainfont="Palatino"
+            # macOS system Palatino has no GSUB table, so \textsc{} silently
+            # renders as regular text. TeX Gyre Pagella is a Palatino clone with
+            # real OpenType smallcaps (smcp). Requires the tex-gyre TeX Live
+            # package AND the .otf files copied to ~/Library/Fonts/ so fontconfig
+            # (and thus XeTeX) can find them by name.
+            -V mainfont="TeX Gyre Pagella"
+            # Workaround for tufte-latex + soul + LaTeX3 incompatibility: the
+            # running headers pass \plaintitle through \smallcaps, which nests
+            # \MakeTextLowercase inside soul's \sodef spacing. The LaTeX3 kernel
+            # (TeX Live 2025+) changed \MakeTextLowercase's expansion in a way
+            # soul can't handle, crashing with "extra }". See tufte-fixes.tex.
+            -H "$(dirname "$BASH_SOURCE")/tufte-fixes.tex"
         )
     else
         PASSTHROUGH_ARGS+=("$arg")

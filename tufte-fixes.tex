@@ -1,0 +1,6 @@
+% Fix tufte-latex/soul/LaTeX3 incompatibility in running headers.
+% soul's \sodef-based spacing breaks when expanding the title through
+% \MakeTextLowercase in modern LaTeX. Just use \textsc directly.
+\AtBeginDocument{%
+  \renewcommand{\smallcaps}[1]{\textsmallcaps{#1}}%
+}
